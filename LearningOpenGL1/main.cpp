@@ -14,7 +14,6 @@ const char *vertexShaderSource =
 	"gl_Position = vec4(vertexPosition.x, vertexPosition.y, vertexPosition.z, 1.0f);\n"
 "}\0";
 
-
 const char *fragmentShaderSource =
 "#version 330 core\n"
 "out vec4 FragColor;\n"
@@ -22,6 +21,16 @@ const char *fragmentShaderSource =
 "{\n"
 	"FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 "}\n\0";
+
+
+const char *fragmentShaderSource2 =
+"#version 330 core\n"
+"out vec4 FragColor;\n"
+"void main()\n"
+"{\n"
+	"FragColor = vec4(0.2f, 0.1f, 1.0f, 1.0f);\n"
+"}\n\0";
+
 
 //-----------------------------------------------------------------//
 
@@ -104,6 +113,17 @@ int main()
 		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION .. " << infoLog << std::endl;
 	}
 
+	// 2nd fragment shader
+	int fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader2, 1, &fragmentShaderSource2, 0);
+	glCompileShader(fragmentShader2);
+	glGetShaderiv(fragmentShader2, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(fragmentShader2, 255, NULL, infoLog);
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION .. " << infoLog << std::endl;
+	}
+
 	
 	// link both
 	int shaderProgram = glCreateProgram();
@@ -117,16 +137,42 @@ int main()
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING .. " << infoLog << std::endl;
 	}
 
+
+	// link both 2
+	int shaderProgram2 = glCreateProgram();
+	glAttachShader(shaderProgram2, vertexShader);
+	glAttachShader(shaderProgram2, fragmentShader2);
+	glLinkProgram(shaderProgram2);
+	glGetProgramiv(shaderProgram2, GL_LINK_STATUS, &success);
+	if (!success)
+	{
+		glGetProgramInfoLog(shaderProgram2, 255, NULL, infoLog);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING .. " << infoLog << std::endl;
+	}
+
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+	glDeleteShader(fragmentShader2);
 
 
 	// -------------- generate the vertices --------------//
-	float vertices[] = {
+	float vertices1[] = {
 		-0.5f, 0.5f, 0.0f,
 		0.0f, -0.5f, 0.0f,
 		0.5f, 0.5f, 0.0f,
 	};
+
+	float vertices2[] = {
+		0.5f, 0.5f, 0.0f,   // top right
+		0.5f, -0.5f, 0.0f,  // bottom right
+		-0.5f, 0.5f, 0.0f,	// top left
+
+		0.5f, -0.5f, 0.0f,  // bottom right
+		-0.5f, -0.5f, 0.0f, // bottom left 
+		-0.5, 0.5, 0.0f		// top left
+	};
+
+
 
 	//------------ VAO, VBO, vertex attributes -----------//
 
@@ -137,7 +183,7 @@ int main()
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (GLvoid *) 0);
 	glEnableVertexAttribArray(0);
 	
@@ -161,6 +207,10 @@ int main()
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		
+		glUseProgram(shaderProgram2);
+		glDrawArrays(GL_TRIANGLES, 3, 3);
+
+
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
