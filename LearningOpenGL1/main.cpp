@@ -1,31 +1,8 @@
 #include <glad\glad.h>			// include glad before glfw as it contain the opengl headers 
 #include <GLFW\glfw3.h>
 #include <iostream>
+#include "shader.h"
 
-//--------------------------- Shaders ---------------------------//
-
-const char *vertexShaderSource =
-"#version 330 core\n"
-"layout (location = 0) in vec3 vertexPosition;\n"
-"layout (location = 1) in vec3 vertexColor;\n"
-"out vec3 outColor;\n"
-"void main()\n"
-"{\n"
-	"gl_Position = vec4(vertexPosition.x, vertexPosition.y, vertexPosition.z, 1.0f);\n"
-	"outColor = vertexColor;\n"
-"}\0";
-
-const char *fragmentShaderSource =
-"#version 330 core\n"
-"in vec3 outColor;\n"
-"out vec4 FragColor;\n"
-"void main()\n"
-"{\n"
-	"FragColor = vec4(outColor, 1.0f);\n"
-	//"FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-"}\n\0";
-
-//-----------------------------------------------------------------//
 
 // register a callback function on the window to be called each time the window get resized
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -78,49 +55,6 @@ int main()
 	// ----------------- callbacks ----------------------//
 
 	glfwSetWindowSizeCallback(window, framebuffer_size_callback);
-
-	// ----- create, compile, link shader objects -------//
-	
-	// vertex shader
-	int vertexShader = glCreateShader(GL_VERTEX_SHADER);	// create empty shader object and return its ID
-	glShaderSource(vertexShader, 1, &vertexShaderSource, 0);
-	glCompileShader(vertexShader);
-	int success;
-	char infoLog[255];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 255, NULL, infoLog);	// Lenght = NULL the pointer to the int pointer to store the returned infoLog string length
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION .. " << infoLog << std::endl; 
-	}
-
-
-	// fragement shader
-	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, 0);
-	glCompileShader(fragmentShader);
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 255, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION .. " << infoLog << std::endl;
-	}
-
-
-	// link both
-	int shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success)
-	{
-		glGetProgramInfoLog(shaderProgram, 255, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING .. " << infoLog << std::endl;
-	}
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
 	
 	// -------------- generate the vertices --------------//
 	float vertices1[] = {
@@ -187,17 +121,16 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);	// set the current color state
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// state-using function
 	
-		glUseProgram(shaderProgram);
-		
+		Shader programShader = Shader("vShader.glsl", "fShader.glsl");
+		programShader.use();
+
 		float currentTime = glfwGetTime();
 		float greenValue = (sin(currentTime) / 2) + 0.5f;
-		unsigned int animatedColorUniformIndex = glGetUniformLocation(shaderProgram, "animatedColor");
-		glUniform4f(animatedColorUniformIndex, 0.0f, greenValue, 0.0f, 1.0f);
+		programShader.setFloat4("animatedColor", 0.0f, greenValue, 0.0f, 1.0f);
 
 		glBindVertexArray(VAO);
+		
 		//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);	// drawing call
-
-
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		glfwSwapBuffers(window);
