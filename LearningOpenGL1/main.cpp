@@ -15,9 +15,11 @@ const char *vertexShaderSource =
 const char *fragmentShaderSource =
 "#version 330 core\n"
 "out vec4 FragColor;\n"
+"uniform vec4 animatedColor;"
 "void main()\n"
 "{\n"
-	"FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+	"FragColor = animatedColor;\n"
+	//"FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
 "}\n\0";
 
 //-----------------------------------------------------------------//
@@ -164,6 +166,7 @@ int main()
 
 	// uncomment this call to draw in wireframe polygons.
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	//------------------- rendering ----------------------//
 
@@ -174,6 +177,12 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// state-using function
 	
 		glUseProgram(shaderProgram);
+		
+		float currentTime = glfwGetTime();
+		float greenValue = (sin(currentTime) / 2) + 0.5f;
+		unsigned int animatedColorUniformIndex = glGetUniformLocation(shaderProgram, "animatedColor");
+		glUniform4f(animatedColorUniformIndex, 0.0f, greenValue, 0.0f, 1.0f);
+
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);	// drawing call
 
