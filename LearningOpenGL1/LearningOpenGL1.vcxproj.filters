@@ -45,5 +45,11 @@
     <Image Include="wall.jpg">
       <Filter>Source Files</Filter>
     </Image>
+    <Image Include="awesomeface.png">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="moana.jpg">
+      <Filter>Source Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
