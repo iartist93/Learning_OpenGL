@@ -223,19 +223,17 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
-		// --------------- transformation -------------------//
-		// NOTE :: Original data at the GPU will not change
-		// we just apply transformation to to it and get a new transformed value to use
-		// Those functions multiply at the right like (I * T * R)
-		// Here we translate the rotation(around the origin at the center of the screen)
-		// each loop the rotate() will rotate the original vertex coord not the new vertex coord after the previous translateion
-		// the translate change the (TX, TY, TZ) each iteration and add them to the original (x,y,z)
-
+		//--------------- Drawing without trans -------------//
 		glm::mat4 trans;	// I4x4
-		
-		trans = glm::translate(trans, glm::vec3(0.5f, 0.0f, 0.0f) * (float) glfwGetTime());
-		trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-		
+		trans = glm::scale(trans, glm::vec3(0.5f));
+		programShader.setMatrix4fv("transform", glm::value_ptr(trans));
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);	// drawing call
+
+		// --------------- transformation -------------------//
+
+		trans = glm::translate(trans, glm::vec3(0.5f, 0.5f, 0.0f));
+		trans = glm::scale(trans, glm::vec3(1.0f) * (float)sin(glfwGetTime()));
 		programShader.setMatrix4fv("transform", glm::value_ptr(trans));		// convert the mat4 class to array pointer
 
 		//-----------------------------------------------------//
