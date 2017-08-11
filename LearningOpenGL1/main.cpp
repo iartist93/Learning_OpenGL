@@ -10,6 +10,12 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+struct
+{
+	int width = 800;
+	int height = 600;
+} viewPort;
+
 //-----------------------------------------------------------------//
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -56,7 +62,7 @@ int main()
 		return -1;
 	}
 
-	glViewport(0, 0, 800, 600);	// tell opengl the size of the rendering window
+	glViewport(0, 0, viewPort.width, viewPort.height);	// tell opengl the size of the rendering window
 
 
 	// ----------------- callbacks ----------------------//
@@ -223,18 +229,20 @@ int main()
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
-		//--------------- Drawing without trans -------------//
-		glm::mat4 trans;	// I4x4
-		trans = glm::scale(trans, glm::vec3(0.5f));
-		programShader.setMatrix4fv("transform", glm::value_ptr(trans));
+		//---------- Coordiation Space Transformation----------//
 
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);	// drawing call
+		glm::mat4 model;		// transform from the local space to the global world space
+		model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
-		// --------------- transformation -------------------//
+		glm::mat4 view;			// transform from the wrold space to the camera space
+		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));		// simulate the camera move back and scene move forward
 
-		trans = glm::translate(trans, glm::vec3(0.5f, 0.5f, 0.0f));
-		trans = glm::scale(trans, glm::vec3(1.0f) * (float)sin(glfwGetTime()));
-		programShader.setMatrix4fv("transform", glm::value_ptr(trans));		// convert the mat4 class to array pointer
+		glm::mat4 projection;	// transform to the NDC using prespective projection
+		projection = glm::perspective(glm::radians(45.0f), (float) viewPort.width / (float) viewPort.height, 0.1f, 100.0f);
+
+		programShader.setMatrix4fv("model", glm::value_ptr(model));
+		programShader.setMatrix4fv("view", glm::value_ptr(view));
+		programShader.setMatrix4fv("projection", glm::value_ptr(projection));
 
 		//-----------------------------------------------------//
 
