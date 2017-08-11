@@ -1,7 +1,7 @@
 #version 330 core
 
-in vec3 OutColor;
-in vec4 OutColor2;
+//in vec3 OutColor;
+//in vec4 OutColor2;
 in vec2 TextCoord;
 
 out vec4 FragColor;

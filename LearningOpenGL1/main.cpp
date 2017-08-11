@@ -88,13 +88,64 @@ int main()
 		-0.5f, 0.5f, 0.0f,		1.0f, 1.0f, 1.0f,		0.0f, 1.0f			// top left
 	};
 
+	float cubeVertices[] = {
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	};
+
 	// Counter-clockwise
 	int indices[] =
 	{
 		0, 1, 3,
 		1, 2, 3
 	};
-
+	
+	// more cubes
+	glm::vec3 cubePositions[] = {
+		glm::vec3(-0.5f, 0.5f, 0.0f),
+		glm::vec3(0.5f,  0.5f, 0.0f),
+		glm::vec3(0.5f, -0.5f, 0.0f),
+		glm::vec3(-0.5f, -0.5f, 0.0f)
+	};
 
 	//------------ VAO, VBO, vertex attributes -----------//
 
@@ -108,23 +159,27 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	
 	// The VBO holding vertex and color data now
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
 	
 	// configure the attribute pointers, how each specific vertex attribute will access the VBO's data
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (GLvoid *) 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (GLvoid *) 0);
 	glEnableVertexAttribArray(0);
 
 	// (VAttrib index | comp size | comp type | normalized | stide | pointer 2 1st comp)
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (void *) (3 * sizeof(GL_FLOAT)));
-	glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (void *) (3 * sizeof(GL_FLOAT)));
+	//glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (void *)(6 * sizeof(GL_FLOAT)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void *)(3 * sizeof(GL_FLOAT)));
 	glEnableVertexAttribArray(2);
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+
+	//----------- Image loading and texture configuration --------//
+
+	
 	int width1, height1, noChannels1,
 		width2, height2, noChannels2;
 
@@ -194,23 +249,15 @@ int main()
 	programShader.setInt("TextureObject1", 0);
 	programShader.setInt("TextureObject2", 1);
 
-
-	// ---------------- Transformations ------------------//
-
-	//glm::mat4 trans;		// identity matrix
-	//trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));	// transform the identifiy to rotation matrix
-	//trans = glm::scale(trans, glm::vec3(0.5f, 0.5f, 0.5f));							// combine the scaling and transformation
-	//trans = glm::translate(trans, glm::vec3(0.5f, -0.5, 0.0f));
-
-
 	// ---------------- rendering options ----------------//
 
 	// uncomment this call to draw in wireframe polygons.
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glEnable(GL_DEPTH_TEST);
 
 	//------------------- rendering ----------------------//
-
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		processInput(window);	// check the current state of buttons each loop
@@ -231,24 +278,43 @@ int main()
 
 		//---------- Coordiation Space Transformation----------//
 
-		glm::mat4 model;		// transform from the local space to the global world space
-		model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-
 		glm::mat4 view;			// transform from the wrold space to the camera space
 		view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));		// simulate the camera move back and scene move forward
 
 		glm::mat4 projection;	// transform to the NDC using prespective projection
-		projection = glm::perspective(glm::radians(45.0f), (float) viewPort.width / (float) viewPort.height, 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(45.0f), (float)viewPort.width / (float)viewPort.height, 0.1f, 100.0f);
 
-		programShader.setMatrix4fv("model", glm::value_ptr(model));
-		programShader.setMatrix4fv("view", glm::value_ptr(view));
-		programShader.setMatrix4fv("projection", glm::value_ptr(projection));
+		for (int i = 0; i < 4; i++)
+		{
+			glm::mat4 model;		// transform from the local space to the global world space
+			model = glm::translate(model, cubePositions[i]);
+			switch (i)
+			{
+			case 0:
+				model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.0f));
+				break;
+			case 1 :
+				model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+				break;
+			case 2:
+				model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(0.6f, 0.3f, 0.5f));
+				break;
+			case 3:
+				model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 0.1f));
+				break;
+			default:
+				break;
+			}
+			model = glm::scale(model, glm::vec3(0.6f));
 
-		//-----------------------------------------------------//
+			programShader.setMatrix4fv("model", glm::value_ptr(model));
+			programShader.setMatrix4fv("view", glm::value_ptr(view));
+			programShader.setMatrix4fv("projection", glm::value_ptr(projection));
+			
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
 
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);	// drawing call
-		
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		// glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);	// drawing call
 
 		GLenum err;
 		while ((err = glGetError()) != GL_NO_ERROR) {
