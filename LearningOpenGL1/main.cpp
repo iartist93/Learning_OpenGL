@@ -10,11 +10,29 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+
+///GLobal Variables
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+
+
 struct
 {
 	int width = 800;
 	int height = 600;
 } viewPort;
+
+struct
+{
+	glm::vec3 upWorld = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 position = glm::vec3(0.0f, 0.0f, 3.0f);
+	glm::vec3 forwardVec = glm::vec3(0.0f, 0.0f, -1.0f);
+	glm::vec3 targetPos = position + forwardVec;		// camPos + forwardVect = trgetPos => related to the current camPos
+	glm::vec3 rightVec = glm::normalize(glm::cross(forwardVec, upWorld));
+	glm::vec3 upVec = glm::normalize(glm::cross(forwardVec, rightVec));
+	float movementSpeed;
+} Camera;
+
 
 //-----------------------------------------------------------------//
 
@@ -23,10 +41,34 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-
 void processInput(GLFWwindow *window)
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE))
+	Camera.movementSpeed = 2.5f * deltaTime;
+	
+	std::cout << "DeltaTime " << deltaTime << " :: Movement Speed " << Camera.movementSpeed << std::endl;
+	
+	// Moving the camera
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)	// Forward
+	{
+		Camera.position += Camera.forwardVec * Camera.movementSpeed;
+	}
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)	// BackWord
+	{
+		Camera.position -= Camera.forwardVec * Camera.movementSpeed;
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)	// Right
+	{
+		Camera.position += Camera.rightVec * Camera.movementSpeed;
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)	// Left
+	{
+		Camera.position -= Camera.rightVec * Camera.movementSpeed;
+	}
+
+	Camera.targetPos = Camera.position + Camera.forwardVec;		// update the variables that's based on this position
+
+	// Exit the games
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE)) 
 	{
 		glfwSetWindowShouldClose(window, true);
 	}
@@ -35,7 +77,7 @@ void processInput(GLFWwindow *window)
 //-----------------------------------------------------------------//
 
 int main()
-{
+{	
 	glfwInit();
 	// set hints fot the next call of GLFWCreateWindow() call
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -262,6 +304,10 @@ int main()
 	
 	while (!glfwWindowShouldClose(window))
 	{
+		// update the delta time
+		deltaTime = glfwGetTime() - lastFrame;
+		lastFrame = glfwGetTime();
+
 		processInput(window);	// check the current state of buttons each loop
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);	// state-set function
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// state-using function
@@ -282,66 +328,16 @@ int main()
 
 		//---------- Coordiation Space Transformation----------//
 
-		//glm::mat4 view;	// transform from the wrold space to the camera space
-		//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));	// simulate the camera move back and scene move forward
+		// Model matrix (from local to wolrd space
+		glm::mat4 model;
+	
+		// View matrix (from world to camera space)
+		glm::mat4 view;
+		view = glm::lookAt(Camera.position, Camera.targetPos, Camera.upVec);
 
+		// Projection matrix (from camera to NDC)ss
 		glm::mat4 projection;	// transform to the NDC using prespective projection
 		projection = glm::perspective(glm::radians(45.0f), (float)viewPort.width / (float)viewPort.height, 0.1f, 100.0f);
-
-
-		// Camera coordinate space
-		glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);	// move back 3 units
-		
-		glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);	// looking at the origin
-		glm::vec3 cameraDirection = glm::normalize(cameraPosition - cameraDirection);	// points toword the +ve camera direcion
-		
-		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
-		glm::vec3 cameraRight = glm::normalize(glm::cross(cameraDirection, up));
-
-		glm::vec3 cameraUp = glm::normalize(glm::cross(cameraDirection, cameraRight));
-
-		// lookat matrix
-		
-		//float raduis = 20.0f;
-		//float camX = sin(glfwGetTime() * raduis);
-		//float camY = cos(glfwGetTime() * raduis);
-
-		glm::mat4 view;
-		view = glm::lookAt(
-			glm::vec3(0.0f, 4.0f, 4.0f),
-			glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::vec3(0.0f, 1.0f, 0.0f)
-		);
-
-		/*
-		for (int i = 0; i < 4; i++)
-		{	
-			glm::mat4 model;		// transform from the local space to the global world space
-			model = glm::translate(model, cubePositions[i]);
-			switch (i)
-			{
-			case 0:
-				model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.0f));
-				break;
-			case 1 :
-				model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
-				break;
-			case 2:
-				model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(0.6f, 0.3f, 0.5f));
-				break;
-			case 3:
-				model = glm::rotate(model, glm::radians(50.0f) * (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 0.1f));
-				break;
-			default:
-				break;
-			}
-			*/
-			
-		glm::mat4 model;
-		model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.0f, 0.0f, 0.1f));
-		model = glm::rotate(model, glm::radians(50.0f), glm::vec3(0.0f, 0.1f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.6f));
 
 		programShader.setMatrix4fv("model", glm::value_ptr(model));
 		programShader.setMatrix4fv("view", glm::value_ptr(view));
