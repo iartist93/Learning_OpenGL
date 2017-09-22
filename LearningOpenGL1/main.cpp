@@ -10,12 +10,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-
-///GLobal Variables
-float deltaTime = 0.0f;
-float lastFrame = 0.0f;
-
-
 struct
 {
 	int width = 800;
@@ -34,7 +28,57 @@ struct
 } Camera;
 
 
+///GLobal Variables
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+
+float lastMousePosX = viewPort.width / 2.0f;	// Center of the window
+float lastMousePosY = viewPort.height / 2.0f;
+float pitch = 0;
+float yaw = -90.0f;
+bool firstMouse = true;
+
+
 //-----------------------------------------------------------------//
+
+void mouse_callback(GLFWwindow *window, double xPos, double yPos)
+{
+	if (firstMouse)
+	{
+		lastMousePosX = xPos;
+		lastMousePosY = yPos;
+		firstMouse = false;
+	}
+
+	// calculate the mouse offset since last frame
+	float xOffset = xPos - lastMousePosX;	// increase right
+	float yOffset = lastMousePosY - yPos;	// increase downwards
+	lastMousePosX = xPos;
+	lastMousePosY = yPos;
+
+	float sensitivity = 0.1f;
+	xOffset *= sensitivity;
+	yOffset *= sensitivity;
+
+	pitch += yOffset;
+	yaw += xOffset;
+
+	// constrains
+	if (pitch > 89.0f)
+		pitch = 89.0f;
+	if (pitch < -89.0f)
+		pitch = -89.0f;
+
+	// caclating the new direction
+	glm::vec3 front;
+	front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
+	front.y = sin(glm::radians(pitch));
+	front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
+	
+	// forward is inially looking towards -ve z-axis
+	// forward is already included in the LookAt function <-- camPos + forwardVec = targetPos
+	Camera.forwardVec = glm::normalize(front);
+}
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -83,6 +127,7 @@ int main()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 	
 #ifdef __APPLE__
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -107,9 +152,12 @@ int main()
 	glViewport(0, 0, viewPort.width, viewPort.height);	// tell opengl the size of the rendering window
 
 
-	// ----------------- callbacks ----------------------//
+	// ------------ callbacks & Configurations ------------//
 
 	glfwSetWindowSizeCallback(window, framebuffer_size_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
+
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);	// hide but capture the cursor (mouse shouldn't leave the window)
 
 	// -------------- generate the vertices --------------//
 	float vertices1[] = {
@@ -330,7 +378,8 @@ int main()
 
 		// Model matrix (from local to wolrd space
 		glm::mat4 model;
-	
+		model = glm::rotate(model, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+
 		// View matrix (from world to camera space)
 		glm::mat4 view;
 		view = glm::lookAt(Camera.position, Camera.targetPos, Camera.upVec);
