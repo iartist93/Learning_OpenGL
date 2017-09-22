@@ -9,6 +9,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include "camera.h"
 
 struct
 {
@@ -16,28 +17,16 @@ struct
 	int height = 600;
 } viewPort;
 
-struct
-{
-	glm::vec3 upWorld = glm::vec3(0.0f, 1.0f, 0.0f);
-	glm::vec3 position = glm::vec3(0.0f, 0.0f, 3.0f);
-	glm::vec3 forwardVec = glm::vec3(0.0f, 0.0f, -1.0f);
-	glm::vec3 targetPos = position + forwardVec;		// camPos + forwardVect = trgetPos => related to the current camPos
-	glm::vec3 rightVec = glm::normalize(glm::cross(forwardVec, upWorld));
-	glm::vec3 upVec = glm::normalize(glm::cross(forwardVec, rightVec));
-	float movementSpeed;
-} Camera;
-
 
 ///GLobal Variables
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-float lastMousePosX = viewPort.width / 2.0f;	// Center of the window
+float lastMousePosX = viewPort.width / 2.0f;
 float lastMousePosY = viewPort.height / 2.0f;
-float pitch = 0;
-float yaw = -90.0f;
 bool firstMouse = true;
 
+Camera camera;
 
 //-----------------------------------------------------------------//
 
@@ -50,35 +39,21 @@ void mouse_callback(GLFWwindow *window, double xPos, double yPos)
 		firstMouse = false;
 	}
 
-	// calculate the mouse offset since last frame
 	float xOffset = xPos - lastMousePosX;	// increase right
 	float yOffset = lastMousePosY - yPos;	// increase downwards
 	lastMousePosX = xPos;
 	lastMousePosY = yPos;
-
-	float sensitivity = 0.1f;
-	xOffset *= sensitivity;
-	yOffset *= sensitivity;
-
-	pitch += yOffset;
-	yaw += xOffset;
-
-	// constrains
-	if (pitch > 89.0f)
-		pitch = 89.0f;
-	if (pitch < -89.0f)
-		pitch = -89.0f;
-
-	// caclating the new direction
-	glm::vec3 front;
-	front.x = cos(glm::radians(pitch)) * cos(glm::radians(yaw));
-	front.y = sin(glm::radians(pitch));
-	front.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
 	
-	// forward is inially looking towards -ve z-axis
-	// forward is already included in the LookAt function <-- camPos + forwardVec = targetPos
-	Camera.forwardVec = glm::normalize(front);
+	// objective :: update the forward vector
+	camera.ProcessMouseMovement(xOffset, yOffset);
 }
+
+void mouse_scroll(GLFWwindow *window, double xOffset, double yOffset)
+{
+	// objective::update the FOV value
+	camera.ProcessMouseScroll(xOffset, yOffset);
+}
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -87,29 +62,18 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void processInput(GLFWwindow *window)
 {
-	Camera.movementSpeed = 2.5f * deltaTime;
-	
-	std::cout << "DeltaTime " << deltaTime << " :: Movement Speed " << Camera.movementSpeed << std::endl;
-	
 	// Moving the camera
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)	// Forward
-	{
-		Camera.position += Camera.forwardVec * Camera.movementSpeed;
-	}
+		camera.ProcessKeyboardInput(FORWARD, deltaTime);
+	
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)	// BackWord
-	{
-		Camera.position -= Camera.forwardVec * Camera.movementSpeed;
-	}
+		camera.ProcessKeyboardInput(BACKWARD, deltaTime);
+	
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)	// Right
-	{
-		Camera.position += Camera.rightVec * Camera.movementSpeed;
-	}
+		camera.ProcessKeyboardInput(RIGHT, deltaTime);
+	
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)	// Left
-	{
-		Camera.position -= Camera.rightVec * Camera.movementSpeed;
-	}
-
-	Camera.targetPos = Camera.position + Camera.forwardVec;		// update the variables that's based on this position
+		camera.ProcessKeyboardInput(LEFT, deltaTime);
 
 	// Exit the games
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE)) 
@@ -156,6 +120,7 @@ int main()
 
 	glfwSetWindowSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, mouse_scroll);
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);	// hide but capture the cursor (mouse shouldn't leave the window)
 
@@ -382,11 +347,11 @@ int main()
 
 		// View matrix (from world to camera space)
 		glm::mat4 view;
-		view = glm::lookAt(Camera.position, Camera.targetPos, Camera.upVec);
+		view = camera.GetViewMatrix();
 
 		// Projection matrix (from camera to NDC)ss
 		glm::mat4 projection;	// transform to the NDC using prespective projection
-		projection = glm::perspective(glm::radians(45.0f), (float)viewPort.width / (float)viewPort.height, 0.1f, 100.0f);
+		projection = glm::perspective(glm::radians(camera.fov), (float)viewPort.width / (float)viewPort.height, 0.1f, 100.0f);
 
 		programShader.setMatrix4fv("model", glm::value_ptr(model));
 		programShader.setMatrix4fv("view", glm::value_ptr(view));
