@@ -23,7 +23,10 @@ public:
 	void setFloat1(const char *unifromName, float value) const;
 	void setFloat4(const char *uniformName, float fv1, float fv2, float fv3, float fv4);
 	void setMatrix4fv(const char *uniformName, const float *martix); 	// 4fv = vector/Array of 4 floats
+	
 	void setFloat3(const char *uniformName, float fv1, float fv2, float fv3);
+	void setFloat3(const char *uniformName, glm::vec3 &value);
+
 
 	//------------------------------------------------------#
 
@@ -135,6 +138,10 @@ void Shader::setFloat3(const char *uniformName, float fv1, float fv2, float fv3)
 	glUniform3f(glGetUniformLocation(ID, uniformName), fv1, fv2, fv3);
 }
 
+void Shader::setFloat3(const char *uniformName, glm::vec3 &value)
+{
+	glUniform3fv(glGetUniformLocation(ID, uniformName), 1, &value[0]);
+}
 
 void Shader::setFloat4(const char *uniformName, float fv1, float fv2, float fv3, float fv4)
 {

@@ -29,6 +29,8 @@ float lastMousePosY = viewPort.height / 2.0f;
 bool firstMouse = true;
 
 Camera camera;
+glm::vec3 lampPosition;
+
 
 //-----------------------------------------------------------------//
 // Callbacks
@@ -140,11 +142,15 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
 	// The VBO holding vertex and color data now
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVerticesWithNormals), cubeVerticesWithNormals, GL_STATIC_DRAW);
 
-	// configure the attribute pointers, how each specific vertex attribute will access the VBO's data
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (GLvoid *)0);
+	// positions
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (GLvoid *)0);
 	glEnableVertexAttribArray(0);
+
+	// normals
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (GLvoid *)(3 * sizeof(GL_FLOAT)));
+	glEnableVertexAttribArray(1);
 
 	//------------------- The Lighting lamp data ------------------//
 
@@ -154,7 +160,7 @@ int main()
 	// we already has VBO with uploaded data just bind it
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void *)NULL);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (void *)NULL);
 	glEnableVertexAttribArray(0);
 
 
@@ -180,11 +186,15 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);	// state-set function
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// state-using function
 
+
+		lampPosition = glm::vec3(0.7f, 0.7f, 0.7f);
+
 		//--------------------- Draw the Scene Cube --------------------//
 
 		SceneCubeShader.use();
 		SceneCubeShader.setFloat3("lightColor", 1.0f, 1.0f, 1.0f);
 		SceneCubeShader.setFloat3("objectColor", 1.0f, 0.5f, 0.31f);
+		SceneCubeShader.setFloat3("lightPos", lampPosition);
 
 		// Model matrix (from local to wolrd space)
 		glm::mat4 model;
@@ -209,7 +219,6 @@ int main()
 
 		LampShader.use();
 		
-		glm::vec3 lampPosition = glm::vec3(0.7f, 0.7f, 0.7f);
 		glm::mat4 lampModel;
 		lampModel = glm::translate(lampModel, lampPosition);
 		lampModel = glm::scale(lampModel, glm::vec3(0.3f));
