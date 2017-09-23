@@ -19,19 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="colors.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="imath.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="fShader2.glsl" />
+    <ClInclude Include="vShader2.glsl" />
     <ClInclude Include="objects.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fShader.glsl" />
+    <None Include="fShader3.glsl" />
     <None Include="vShader.glsl" />
+    <None Include="vShader3.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="awesomeface.png" />

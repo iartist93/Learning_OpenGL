@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Lighting">
+      <UniqueIdentifier>{6ac5c780-3033-4117-bccf-42640a2a3c90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -23,6 +26,9 @@
     </ClCompile>
     <ClCompile Include="imath.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="colors.cpp">
+      <Filter>Source Files\Lighting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +44,12 @@
     <ClInclude Include="objects.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="vShader2.glsl">
+      <Filter>Source Files\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="fShader2.glsl">
+      <Filter>Source Files\Lighting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fShader.glsl">
@@ -45,6 +57,12 @@
     </None>
     <None Include="vShader.glsl">
       <Filter>Source Files</Filter>
+    </None>
+    <None Include="vShader3.glsl">
+      <Filter>Source Files\Lighting</Filter>
+    </None>
+    <None Include="fShader3.glsl">
+      <Filter>Source Files\Lighting</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

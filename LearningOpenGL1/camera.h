@@ -57,7 +57,7 @@ Camera::Camera(
 )
 {
 	this->position = position;
-	this->worldUp = up;
+	this->worldUp = up; 
 	this->forward = forward;
 	this->yaw = yaw;
 	this->pitch = pitch;

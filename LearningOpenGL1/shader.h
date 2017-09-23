@@ -23,6 +23,7 @@ public:
 	void setFloat1(const char *unifromName, float value) const;
 	void setFloat4(const char *uniformName, float fv1, float fv2, float fv3, float fv4);
 	void setMatrix4fv(const char *uniformName, const float *martix); 	// 4fv = vector/Array of 4 floats
+	void setFloat3(const char *uniformName, float fv1, float fv2, float fv3);
 
 	//------------------------------------------------------#
 
@@ -128,6 +129,12 @@ void Shader::setFloat1(const char *uniformName, float value) const
 {
 	glUniform1f(glGetUniformLocation(ID, uniformName), value);
 }
+
+void Shader::setFloat3(const char *uniformName, float fv1, float fv2, float fv3)
+{
+	glUniform3f(glGetUniformLocation(ID, uniformName), fv1, fv2, fv3);
+}
+
 
 void Shader::setFloat4(const char *uniformName, float fv1, float fv2, float fv3, float fv4)
 {
