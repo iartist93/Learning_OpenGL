@@ -1,5 +1,15 @@
 #version 330 core
 
+
+struct Material
+{
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+	float shininess;
+};
+
+
 in vec3 Normal;
 in vec3 FragPos;
 
@@ -8,6 +18,8 @@ uniform vec3 lightColor;
 uniform vec3 objectColor;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
+uniform Material material;
+
 
 out vec4 FragColor;
 
@@ -20,18 +32,18 @@ void main()
 	vec3 viewDir  = normalize(viewPos - FragPos);
 	
 	// Ambient
-	float ambientStrength = 0.5f;
-	vec3 ambientColor = ambientStrength * lightColor;
+	//float ambientStrength = 0.5f;
+	vec3 ambientColor = material.ambient * lightColor;
 
 	// Diffuse
-	float diffFact = max(dot(normVec, lightDir), 0.0f);
-	vec3 diffColor = diffFact * lightColor; 
+	float diff = max(dot(normVec, lightDir), 0.0f);
+	vec3 diffColor = (diff * material.diffuse) * lightColor; 
 
 	// Specular
 	vec3 reflectedDir = reflect(-lightDir, normVec);
-	float spec = pow(max(dot(reflectedDir, viewDir), 0.0f), 32);
-	float shininess = 0.5f;
-	vec3 specularColor = spec * shininess * lightColor;
+	float spec = pow(max(dot(reflectedDir, viewDir), 0.0f), material.shininess);
+	//float specularStrength = 0.5f;
+	vec3 specularColor = (spec * material.specular) * lightColor;
 
 	// Final Color
 	vec3 resultColor = (specularColor + diffColor + ambientColor) * objectColor;

@@ -187,7 +187,7 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// state-using function
 
 
-		lampPosition = glm::vec3(0.7f, 0.7f, 0.7f);
+		lampPosition = glm::vec3(0.8f, 0.3f, 1.0f);
 
 		//--------------------- Draw the Scene Cube --------------------//
 
@@ -197,10 +197,15 @@ int main()
 		SceneCubeShader.setFloat3("lightPos", lampPosition);
 		SceneCubeShader.setFloat3("viewPos", camera.position);
 
+		SceneCubeShader.setFloat3("material.ambient", 1.0f, 0.5f, 0.31f);	// desired object's color
+		SceneCubeShader.setFloat3("material.diffuse", 1.0f, 0.5f, 0.31f);	// desired object's color
+		SceneCubeShader.setFloat3("material.specular", 0.5f, 0.5f, 0.5f);	// meduim-bright color
+		SceneCubeShader.setFloat1("material.shininess", 32.0f);
+
 
 		// Model matrix (from local to wolrd space)
 		glm::mat4 model;
-		model = glm::rotate(model, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		// View matrix (from world to camera space)
 		glm::mat4 view;
@@ -223,7 +228,7 @@ int main()
 		
 		glm::mat4 lampModel;
 		lampModel = glm::translate(lampModel, lampPosition);
-		lampModel = glm::scale(lampModel, glm::vec3(0.3f));
+		lampModel = glm::scale(lampModel, glm::vec3(0.2f));
 
 		LampShader.setMatrix4fv("model", glm::value_ptr(lampModel));	// <-- the only difference
 		LampShader.setMatrix4fv("view", glm::value_ptr(view));
