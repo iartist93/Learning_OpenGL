@@ -202,6 +202,21 @@ int main()
 		SceneCubeShader.setFloat3("material.specular", 0.5f, 0.5f, 0.5f);	// meduim-bright color
 		SceneCubeShader.setFloat1("material.shininess", 32.0f);
 
+		glm::vec3 lightColor;
+		lightColor.x = sin(glfwGetTime() * 2.0f);
+		lightColor.y = sin(glfwGetTime() * 1.0f);
+		lightColor.z = sin(glfwGetTime() * 1.5f);
+
+		// the properties of the light are factors of the light's colors
+		glm::vec3 lightAmbient = lightColor * 0.2f;	// less impact 
+		glm::vec3 lightDiffuse = lightColor * 0.5f;	// decrease the infulence
+		glm::vec3 lightSpecular = glm::vec3(1.0f);	// shinny at full intensity
+
+		SceneCubeShader.setFloat3("light.ambient", lightAmbient);
+		SceneCubeShader.setFloat3("light.diffuse", lightDiffuse);
+		SceneCubeShader.setFloat3("light.specular", lightSpecular);
+
+
 
 		// Model matrix (from local to wolrd space)
 		glm::mat4 model;
@@ -233,6 +248,7 @@ int main()
 		LampShader.setMatrix4fv("model", glm::value_ptr(lampModel));	// <-- the only difference
 		LampShader.setMatrix4fv("view", glm::value_ptr(view));
 		LampShader.setMatrix4fv("projection", glm::value_ptr(projection));
+		LampShader.setFloat3("lightColorNow", lightColor);
 
 		glBindVertexArray(lightVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
