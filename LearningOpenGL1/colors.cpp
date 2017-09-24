@@ -195,6 +195,8 @@ int main()
 		SceneCubeShader.setFloat3("lightColor", 1.0f, 1.0f, 1.0f);
 		SceneCubeShader.setFloat3("objectColor", 1.0f, 0.5f, 0.31f);
 		SceneCubeShader.setFloat3("lightPos", lampPosition);
+		SceneCubeShader.setFloat3("viewPos", camera.position);
+
 
 		// Model matrix (from local to wolrd space)
 		glm::mat4 model;
