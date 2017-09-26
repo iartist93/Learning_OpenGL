@@ -30,6 +30,9 @@
     <ClCompile Include="colors.cpp">
       <Filter>Source Files\Lighting</Filter>
     </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="shader.h">
@@ -52,9 +55,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="fShader.glsl">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="vShader.glsl">
       <Filter>Source Files</Filter>
     </None>
@@ -64,11 +64,11 @@
     <None Include="fShader3.glsl">
       <Filter>Source Files\Lighting</Filter>
     </None>
+    <None Include="fShader.glsl">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="container.jpg">
-      <Filter>Source Files</Filter>
-    </Image>
     <Image Include="wall.jpg">
       <Filter>Source Files</Filter>
     </Image>
@@ -76,6 +76,15 @@
       <Filter>Source Files</Filter>
     </Image>
     <Image Include="moana.jpg">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="container2_specular.png">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="container1.jpg">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="container2.png">
       <Filter>Source Files</Filter>
     </Image>
   </ItemGroup>

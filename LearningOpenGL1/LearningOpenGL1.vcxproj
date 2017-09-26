@@ -23,6 +23,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="imath.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
@@ -40,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="awesomeface.png" />
-    <Image Include="container.jpg" />
+    <Image Include="container1.jpg" />
+    <Image Include="container2.png" />
+    <Image Include="container2_specular.png" />
     <Image Include="moana.jpg" />
     <Image Include="wall.jpg" />
   </ItemGroup>

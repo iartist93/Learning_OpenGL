@@ -88,6 +88,41 @@ void processInput(GLFWwindow *window)
 }
 
 //-----------------------------------------------------------------//
+// Helper Functions
+//-----------------------------------------------------------------//
+unsigned int load_texture(GLenum texture_unit, char *file_name)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+
+	int width, height, channels_no;
+	unsigned char *imageData = stbi_load(file_name, &width, &height, &channels_no, 0);
+
+	if (imageData)
+	{
+		GLenum format;
+
+		if (channels_no == 1)
+			format = GL_RED;
+		else if (channels_no == 3)
+			format = GL_RGB;
+		else if (channels_no == 4)
+			format = GL_RGBA;
+
+		glActiveTexture(texture_unit);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, format, GL_UNSIGNED_BYTE, imageData);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		stbi_image_free(imageData);
+	}
+	else
+	{
+		std::cout << "ERROR::TEXTURE::LOADING::FAILED:: " << file_name << std::endl;
+	}
+	return textureID;
+}
+
 
 int main()
 {
@@ -129,6 +164,11 @@ int main()
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);	// hide but capture the cursor (mouse shouldn't leave the window)
 
+	//----------------------- Shader Programs ------------------------//
+
+	Shader SceneCubeShader = Shader("vShader2.glsl", "fShader2.glsl");
+	Shader LampShader = Shader("vShader3.glsl", "fShader3.glsl");
+
 	//------------ VAO, VBO, vertex attributes -----------//
 
 	unsigned int VBO, VAO, lightVAO;
@@ -142,15 +182,20 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
 	// The VBO holding vertex and color data now
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVerticesWithNormals), cubeVerticesWithNormals, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeNormalTexture), cubeNormalTexture, GL_STATIC_DRAW);
 
 	// positions
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (GLvoid *)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (GLvoid *)0);
 	glEnableVertexAttribArray(0);
 
 	// normals
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (GLvoid *)(3 * sizeof(GL_FLOAT)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (GLvoid *)(3 * sizeof(GL_FLOAT)));
 	glEnableVertexAttribArray(1);
+
+	// texture coords
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (GLvoid *)(6 * sizeof(GL_FLOAT)));
+	glEnableVertexAttribArray(2);
+
 
 	//------------------- The Lighting lamp data ------------------//
 
@@ -160,14 +205,17 @@ int main()
 	// we already has VBO with uploaded data just bind it
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (void *)NULL);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GL_FLOAT), (void *)NULL);
 	glEnableVertexAttribArray(0);
 
 
-	//----------------------- Shader Programs ------------------------//
+	// Light Maps ( Diffuse + Specular )
+	unsigned int diffuse_map = load_texture(GL_TEXTURE0 ,"container2.png");
+	unsigned int specular_map = load_texture(GL_TEXTURE1 ,"container2_specular.png");
 
-	Shader SceneCubeShader = Shader("vShader2.glsl", "fShader2.glsl");
-	Shader LampShader = Shader("vShader3.glsl", "fShader3.glsl");
+	SceneCubeShader.use();
+	SceneCubeShader.setInt("material.diffuse", 0);	// texture unit
+	SceneCubeShader.setInt("material.specular", 1);
 
 	// ---------------- rendering options ----------------//
 
@@ -186,26 +234,23 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);	// state-set function
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// state-using function
 
-
 		lampPosition = glm::vec3(0.8f, 0.3f, 1.0f);
 
 		//--------------------- Draw the Scene Cube --------------------//
 
 		SceneCubeShader.use();
+
 		SceneCubeShader.setFloat3("lightColor", 1.0f, 1.0f, 1.0f);
 		SceneCubeShader.setFloat3("objectColor", 1.0f, 0.5f, 0.31f);
 		SceneCubeShader.setFloat3("lightPos", lampPosition);
-		SceneCubeShader.setFloat3("viewPos", camera.position);
-
-		SceneCubeShader.setFloat3("material.ambient", 1.0f, 0.5f, 0.31f);	// desired object's color
-		SceneCubeShader.setFloat3("material.diffuse", 1.0f, 0.5f, 0.31f);	// desired object's color
-		SceneCubeShader.setFloat3("material.specular", 0.5f, 0.5f, 0.5f);	// meduim-bright color
+		SceneCubeShader.setFloat3("viewPos", camera.position);	
 		SceneCubeShader.setFloat1("material.shininess", 32.0f);
 
-		glm::vec3 lightColor;
-		lightColor.x = sin(glfwGetTime() * 2.0f);
-		lightColor.y = sin(glfwGetTime() * 1.0f);
-		lightColor.z = sin(glfwGetTime() * 1.5f);
+
+		glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+		//lightColor.x = sin(glfwGetTime() * 2.0f);
+		//lightColor.y = sin(glfwGetTime() * 1.0f);
+		//lightColor.z = sin(glfwGetTime() * 1.5f);
 
 		// the properties of the light are factors of the light's colors
 		glm::vec3 lightAmbient = lightColor * 0.2f;	// less impact 
@@ -215,7 +260,6 @@ int main()
 		SceneCubeShader.setFloat3("light.ambient", lightAmbient);
 		SceneCubeShader.setFloat3("light.diffuse", lightDiffuse);
 		SceneCubeShader.setFloat3("light.specular", lightSpecular);
-
 
 
 		// Model matrix (from local to wolrd space)
