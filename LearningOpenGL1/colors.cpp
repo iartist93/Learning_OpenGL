@@ -262,6 +262,12 @@ int main()
 		SceneCubeShader.setFloat3("light.diffuse", lightDiffuse);
 		SceneCubeShader.setFloat3("light.specular", lightSpecular);
 
+		// Point Light
+		SceneCubeShader.setFloat1("light.constant", 1.0f);
+		SceneCubeShader.setFloat1("light.linear", 0.35f);
+		SceneCubeShader.setFloat1("light.constant", 0.44f);
+		SceneCubeShader.setFloat1("light.range", 13.0f);
+
 
 		// Model matrix (from local to wolrd space)
 		//glm::mat4 model;
