@@ -253,8 +253,8 @@ int main()
 		//lightColor.z = sin(glfwGetTime() * 1.5f);
 
 		// the properties of the light are factors of the light's colors
-		glm::vec3 lightAmbient = lightColor * 0.2f;	// less impact 
-		glm::vec3 lightDiffuse = lightColor * 0.5f;	// decrease the infulence
+		glm::vec3 lightAmbient = lightColor * 0.1f;	// less impact 
+		glm::vec3 lightDiffuse = lightColor * 0.8f;	// decrease the infulence
 		glm::vec3 lightSpecular = glm::vec3(1.0f);	// shinny at full intensity
 
 		SceneCubeShader.setFloat3("light.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
@@ -264,10 +264,15 @@ int main()
 
 		// Point Light
 		SceneCubeShader.setFloat1("light.constant", 1.0f);
-		SceneCubeShader.setFloat1("light.linear", 0.35f);
-		SceneCubeShader.setFloat1("light.constant", 0.44f);
+		SceneCubeShader.setFloat1("light.linear", 0.09f);
+		SceneCubeShader.setFloat1("light.quadratic", 0.032f);
 		SceneCubeShader.setFloat1("light.range", 13.0f);
 
+		// Spot Light
+		SceneCubeShader.setFloat3("light.position", camera.position);
+		SceneCubeShader.setFloat3("light.direction", camera.forward);
+		SceneCubeShader.setFloat1("light.cutoff", glm::cos(glm::radians(42.5f)));
+		
 
 		// Model matrix (from local to wolrd space)
 		//glm::mat4 model;

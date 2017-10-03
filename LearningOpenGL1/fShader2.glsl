@@ -38,6 +38,22 @@ struct PointLight
 	float quadratic;
 };
 
+struct FlashLight
+{
+	vec3 position;
+	vec3 direction;
+
+	float cutoff;
+
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+
+	float constant;
+	float linear;
+	float quadratic;
+};
+
 
 in vec3 Normal;
 in vec3 FragPos;
@@ -50,7 +66,8 @@ uniform vec3 viewPos;
 uniform Material material;
 //uniform Light light;
 //uniform DirLight light;
-uniform PointLight light;
+//uniform PointLight light;
+uniform FlashLight light;
 
 out vec4 FragColor;
 
@@ -61,31 +78,44 @@ void main()
 	vec3 lightDir = normalize(lightPos - FragPos);
 	//vec3 lightDir = normalize(-light.direction);
 	vec3 viewDir  = normalize(viewPos - FragPos);
+
+	float theta = dot(-lightDir, normalize(light.direction));
+
+	vec3 resultColor;
 	
-	float distance = length(light.position - FragPos);
-	float attenuation = light.constant + (light.linear * distance) + (light.quadratic * distance * distance);
-	float luminosity = 1.0f / attenuation;
+	if(theta > light.cutoff)	// frag inside
+	{
+		float distance = length(light.position - FragPos);
+		float attenuation = light.constant + (light.linear * distance) + (light.quadratic * distance * distance);
+		float luminosity = 1.0f / attenuation;
 
-	// Ambient
-	//float ambientStrength = 0.5f;
-	vec3 ambientColor = texture(material.diffuse, TextCoords).rgb * light.ambient;
+		// Ambient
+		//float ambientStrength = 0.5f;
+		vec3 ambientColor = texture(material.diffuse, TextCoords).rgb * light.ambient;
 
-	// Diffuse
-	float diff = max(dot(normVec, lightDir), 0.0f);
-	vec3 diffColor = diff * texture(material.diffuse, TextCoords).rgb  * light.diffuse; 
+		// Diffuse
+		float diff = max(dot(normVec, lightDir), 0.0f);
+		vec3 diffColor = diff * texture(material.diffuse, TextCoords).rgb  * light.diffuse; 
 
-	// Specular
-	vec3 reflectedDir = reflect(-lightDir, normVec);
-	float spec = pow(max(dot(reflectedDir, viewDir), 0.0f), material.shininess);
-	//float specularStrength = 0.5f;
-	vec3 specularColor = spec * texture(material.specular, TextCoords).rgb * light.specular;
+		// Specular
+		vec3 reflectedDir = reflect(-lightDir, normVec);
+		float spec = pow(max(dot(reflectedDir, viewDir), 0.0f), material.shininess);
+		//float specularStrength = 0.5f;
+		vec3 specularColor = spec * texture(material.specular, TextCoords).rgb * light.specular;
 
-	// For point light
-	// ambientColor *= luminosity;	// we don't want to ambient to decrease over distance
-	diffColor *= luminosity;
-	specularColor *= luminosity;
+		// For point light
+		//ambientColor *= luminosity;	// we don't want to ambient to decrease over distance
+		diffColor *= luminosity;
+		specularColor *= luminosity;
 
-	// Final Color
-	vec3 resultColor = (specularColor + diffColor + ambientColor) ; //* objectColor;
+		// Final Color
+		resultColor = (specularColor + diffColor + ambientColor) ; //* objectColor;
+		
+	} 
+	else 	// use only the ambient light
+	{
+		resultColor = light.ambient * vec3(texture(material.diffuse, TextCoords));
+	}
+
 	FragColor = vec4(resultColor, 1.0f);
 }
