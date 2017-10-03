@@ -78,14 +78,14 @@
     <Image Include="moana.jpg">
       <Filter>Source Files</Filter>
     </Image>
-    <Image Include="container2_specular.png">
-      <Filter>Source Files</Filter>
-    </Image>
     <Image Include="container1.jpg">
       <Filter>Source Files</Filter>
     </Image>
     <Image Include="container2.png">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Lighting</Filter>
+    </Image>
+    <Image Include="container2_specular.png">
+      <Filter>Source Files\Lighting</Filter>
     </Image>
   </ItemGroup>
 </Project>

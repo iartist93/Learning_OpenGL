@@ -244,7 +244,7 @@ int main()
 		SceneCubeShader.setFloat3("objectColor", 1.0f, 0.5f, 0.31f);
 		SceneCubeShader.setFloat3("lightPos", lampPosition);
 		SceneCubeShader.setFloat3("viewPos", camera.position);	
-		SceneCubeShader.setFloat1("material.shininess", 32.0f);
+		SceneCubeShader.setFloat1("material.shininess", 16.0f);
 
 
 		glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -257,14 +257,15 @@ int main()
 		glm::vec3 lightDiffuse = lightColor * 0.5f;	// decrease the infulence
 		glm::vec3 lightSpecular = glm::vec3(1.0f);	// shinny at full intensity
 
+		SceneCubeShader.setFloat3("light.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
 		SceneCubeShader.setFloat3("light.ambient", lightAmbient);
 		SceneCubeShader.setFloat3("light.diffuse", lightDiffuse);
 		SceneCubeShader.setFloat3("light.specular", lightSpecular);
 
 
 		// Model matrix (from local to wolrd space)
-		glm::mat4 model;
-		model = glm::rotate(model, glm::radians(30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glm::mat4 model;
+		//model = glm::rotate(model, glm::radians(30.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		// View matrix (from world to camera space)
 		glm::mat4 view;
@@ -274,12 +275,27 @@ int main()
 		glm::mat4 projection;	// transform to the NDC using prespective projection
 		projection = glm::perspective(glm::radians(camera.fov), (float)viewPort.width / (float)viewPort.height, 0.1f, 100.0f);
 
-		SceneCubeShader.setMatrix4fv("model", glm::value_ptr(model));
+		//SceneCubeShader.setMatrix4fv("model", glm::value_ptr(model));
 		SceneCubeShader.setMatrix4fv("view", glm::value_ptr(view));
 		SceneCubeShader.setMatrix4fv("projection", glm::value_ptr(projection));
 
+		// VAO for cubes [ render cubes ]
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		for (unsigned int i = 0; i < 4; i++)
+		{
+			glm::mat4 model;
+			model = glm::translate(model, cubePositions[i]);
+
+			float angel = 30.0f * i;
+			model = glm::rotate(model, glm::radians(angel), glm::vec3(1.0f, 0.3f, 0.5f));
+
+			model = glm::scale(model, glm::vec3(0.3f));
+
+			SceneCubeShader.setMatrix4fv("model", glm::value_ptr(model));
+
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+
 
 		//--------------------- Draw the lamb Cube --------------------//
 

@@ -16,6 +16,15 @@ struct Light
 	vec3 color;
 };
 
+struct DirLight
+{
+	vec3 direction;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;	
+};
+
+
 in vec3 Normal;
 in vec3 FragPos;
 in vec2 TextCoords;
@@ -25,7 +34,9 @@ uniform vec3 objectColor;
 uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform Material material;
-uniform Light light;
+//uniform Light light;
+uniform DirLight light;
+
 
 out vec4 FragColor;
 
@@ -33,7 +44,8 @@ void main()
 {	
 	// Vectors
 	vec3 normVec  = normalize(Normal);
-	vec3 lightDir = normalize(lightPos - FragPos);
+	//vec3 lightDir = normalize(lightPos - FragPos);
+	vec3 lightDir = normalize(-light.direction);
 	vec3 viewDir  = normalize(viewPos - FragPos);
 	
 	// Ambient
