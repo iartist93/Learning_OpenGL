@@ -48,7 +48,7 @@ private:
 };
 
 Camera::Camera(
-	glm::vec3 position = glm::vec3(0.0f, 0.0f, 3.0f),
+	glm::vec3 position = glm::vec3(0.0f, 0.0f, 5.0f),
 	glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
 	glm::vec3 forward = glm::vec3(0.0f, 0.0f, -1.0f),
 	float yaw = YAW, 
@@ -128,7 +128,7 @@ void Camera::UpdateCameraVectors()
 	forward = glm::normalize(front);
 
 	right = glm::normalize(glm::cross(forward, worldUp));
-	up = glm::normalize(glm::cross(forward, right));
+	up = glm::normalize(glm::cross(right, forward));
 }
 
 glm::mat4 Camera::GetViewMatrix()

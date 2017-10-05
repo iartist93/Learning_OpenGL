@@ -43,7 +43,8 @@ struct FlashLight
 	vec3 position;
 	vec3 direction;
 
-	float cutoff;
+	float innerCutoff;		// inner coine cutoff = Phi
+	float outterCutoff;		// outt coine cuttoff = gamma
 
 	vec3 ambient;
 	vec3 diffuse;
@@ -75,15 +76,18 @@ void main()
 {	
 	// Vectors
 	vec3 normVec  = normalize(Normal);
-	vec3 lightDir = normalize(lightPos - FragPos);
+	vec3 lightDir = normalize(light.position - FragPos);		// in world coords
 	//vec3 lightDir = normalize(-light.direction);
 	vec3 viewDir  = normalize(viewPos - FragPos);
 
+	// spotlight soft-edge
 	float theta = dot(-lightDir, normalize(light.direction));
+	float epsilon = light.innerCutoff - light.outterCutoff; // inner - outter
+	float intensity = clamp((theta - light.outterCutoff) / epsilon, 0.0, 1.0);
 
 	vec3 resultColor;
 	
-	if(theta > light.cutoff)	// frag inside
+	if(theta > light.outterCutoff)	// frag inside
 	{
 		float distance = length(light.position - FragPos);
 		float attenuation = light.constant + (light.linear * distance) + (light.quadratic * distance * distance);
@@ -105,8 +109,8 @@ void main()
 
 		// For point light
 		//ambientColor *= luminosity;	// we don't want to ambient to decrease over distance
-		diffColor *= luminosity;
-		specularColor *= luminosity;
+		diffColor *= luminosity * intensity;
+		specularColor *= luminosity * intensity;
 
 		// Final Color
 		resultColor = (specularColor + diffColor + ambientColor) ; //* objectColor;

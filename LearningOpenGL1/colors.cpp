@@ -46,6 +46,9 @@ void mouse_callback(GLFWwindow *window, double xPos, double yPos)
 
 	float xOffset = xPos - lastMousePosX;	// increase right
 	float yOffset = lastMousePosY - yPos;	// increase downwards
+	
+	std::cout << xOffset << " " << yOffset << " " << lastMousePosX << " " << lastMousePosY << std::endl;
+	
 	lastMousePosX = xPos;
 	lastMousePosY = yPos;
 
@@ -234,7 +237,7 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);	// state-set function
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// state-using function
 
-		lampPosition = glm::vec3(0.8f, 0.3f, 1.0f);
+		lampPosition = glm::vec3(0.5f, 0.5f, 0.5f);
 
 		//--------------------- Draw the Scene Cube --------------------//
 
@@ -271,8 +274,9 @@ int main()
 		// Spot Light
 		SceneCubeShader.setFloat3("light.position", camera.position);
 		SceneCubeShader.setFloat3("light.direction", camera.forward);
-		SceneCubeShader.setFloat1("light.cutoff", glm::cos(glm::radians(42.5f)));
-		
+		SceneCubeShader.setFloat1("light.innerCutoff", glm::cos(glm::radians(10.5f)));
+		SceneCubeShader.setFloat1("light.outterCutoff", glm::cos(glm::radians(12.5f)));
+
 
 		// Model matrix (from local to wolrd space)
 		//glm::mat4 model;
@@ -292,7 +296,7 @@ int main()
 
 		// VAO for cubes [ render cubes ]
 		glBindVertexArray(VAO);
-		for (unsigned int i = 0; i < 4; i++)
+		for (unsigned int i = 0; i < 5; i++)
 		{
 			glm::mat4 model;
 			model = glm::translate(model, cubePositions[i]);
