@@ -242,13 +242,8 @@ int main()
 		//--------------------- Draw the Scene Cube --------------------//
 
 		SceneCubeShader.use();
-
-		SceneCubeShader.setFloat3("lightColor", 1.0f, 1.0f, 1.0f);
-		SceneCubeShader.setFloat3("objectColor", 1.0f, 0.5f, 0.31f);
-		SceneCubeShader.setFloat3("lightPos", lampPosition);
 		SceneCubeShader.setFloat3("viewPos", camera.position);	
 		SceneCubeShader.setFloat1("material.shininess", 16.0f);
-
 
 		glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 		//lightColor.x = sin(glfwGetTime() * 2.0f);
@@ -260,23 +255,43 @@ int main()
 		glm::vec3 lightDiffuse = lightColor * 0.8f;	// decrease the infulence
 		glm::vec3 lightSpecular = glm::vec3(1.0f);	// shinny at full intensity
 
-		SceneCubeShader.setFloat3("light.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
-		SceneCubeShader.setFloat3("light.ambient", lightAmbient);
-		SceneCubeShader.setFloat3("light.diffuse", lightDiffuse);
-		SceneCubeShader.setFloat3("light.specular", lightSpecular);
+		//------------------ directional light --------------------//
+		
+		SceneCubeShader.setFloat3("dirLights[0].direction", glm::vec3(-0.2f, -1.0f, -0.3f));
+		SceneCubeShader.setFloat3("dirLights[0].ambient", lightAmbient);
+		SceneCubeShader.setFloat3("dirLights[0].diffuse", lightDiffuse);
+		SceneCubeShader.setFloat3("dirLights[0].specular", lightSpecular);
 
-		// Point Light
-		SceneCubeShader.setFloat1("light.constant", 1.0f);
-		SceneCubeShader.setFloat1("light.linear", 0.09f);
-		SceneCubeShader.setFloat1("light.quadratic", 0.032f);
-		SceneCubeShader.setFloat1("light.range", 13.0f);
+		// ------------------- Point Light ------------------------ //
 
-		// Spot Light
-		SceneCubeShader.setFloat3("light.position", camera.position);
-		SceneCubeShader.setFloat3("light.direction", camera.forward);
-		SceneCubeShader.setFloat1("light.innerCutoff", glm::cos(glm::radians(10.5f)));
-		SceneCubeShader.setFloat1("light.outterCutoff", glm::cos(glm::radians(12.5f)));
+		SceneCubeShader.setFloat3("pointLights[0].position", lampPosition);
 
+		SceneCubeShader.setFloat3("pointLights[0].ambient", lightAmbient);
+		SceneCubeShader.setFloat3("pointLights[0].diffuse", lightDiffuse);
+		SceneCubeShader.setFloat3("pointLights[0].specular", lightSpecular);
+
+		SceneCubeShader.setFloat1("pointLights[0].constant", 1.0f);
+		SceneCubeShader.setFloat1("pointLights[0].linear", 0.09f);
+		SceneCubeShader.setFloat1("pointLights[0].quadratic", 0.032f);
+		SceneCubeShader.setFloat1("pointLights[0].range", 13.0f);
+
+		// ---------------------- Spot Light --------------------- //
+
+		SceneCubeShader.setFloat3("flashLights[0].position", camera.position);
+		SceneCubeShader.setFloat3("flashLights[0].direction", camera.forward);
+		SceneCubeShader.setFloat1("flashLights[0].innerCutoff", glm::cos(glm::radians(10.5f)));
+		SceneCubeShader.setFloat1("flashLights[0].outterCutoff", glm::cos(glm::radians(12.5f)));
+
+		SceneCubeShader.setFloat3("flashLights[0].ambient", lightAmbient);
+		SceneCubeShader.setFloat3("flashLights[0].diffuse", lightDiffuse);
+		SceneCubeShader.setFloat3("flashLights[0].specular", lightSpecular);
+
+		SceneCubeShader.setFloat1("flashLights[0].constant", 1.0f);
+		SceneCubeShader.setFloat1("flashLights[0].linear", 0.09f);
+		SceneCubeShader.setFloat1("flashLights[0].quadratic", 0.032f);
+		SceneCubeShader.setFloat1("flashLights[0].range", 13.0f);
+
+		// ------------------------------------------------------ //
 
 		// Model matrix (from local to wolrd space)
 		//glm::mat4 model;
