@@ -234,41 +234,42 @@ int main()
 		lastFrame = glfwGetTime();
 
 		processInput(window);
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);	// state-set function
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);	// state-set function
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// state-using function
 
-		lampPosition = glm::vec3(0.5f, 0.5f, 0.5f);
-
+		
 		//--------------------- Draw the Scene Cube --------------------//
+
+		lampPosition = glm::vec3(0.6f, 0.8f, 0.7f);
 
 		SceneCubeShader.use();
 		SceneCubeShader.setFloat3("viewPos", camera.position);	
 		SceneCubeShader.setFloat1("material.shininess", 16.0f);
 
-		glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-		//lightColor.x = sin(glfwGetTime() * 2.0f);
-		//lightColor.y = sin(glfwGetTime() * 1.0f);
-		//lightColor.z = sin(glfwGetTime() * 1.5f);
-
-		// the properties of the light are factors of the light's colors
-		glm::vec3 lightAmbient = lightColor * 0.1f;	// less impact 
-		glm::vec3 lightDiffuse = lightColor * 0.8f;	// decrease the infulence
-		glm::vec3 lightSpecular = glm::vec3(1.0f);	// shinny at full intensity
-
 		//------------------ directional light --------------------//
 		
+		glm::vec3 dirLightColor = glm::vec3(137.0f / 255.0f, 27.0f / 255.0f, 27.0f / 255.0f);
+		glm::vec3 dirAmbient = dirLightColor * 0.1f;
+		glm::vec3 dirDiffuse = dirLightColor * 0.8f;
+		glm::vec3 dirSpecular = glm::vec3(1.0f);
+
 		SceneCubeShader.setFloat3("dirLights[0].direction", glm::vec3(-0.2f, -1.0f, -0.3f));
-		SceneCubeShader.setFloat3("dirLights[0].ambient", lightAmbient);
-		SceneCubeShader.setFloat3("dirLights[0].diffuse", lightDiffuse);
-		SceneCubeShader.setFloat3("dirLights[0].specular", lightSpecular);
+		SceneCubeShader.setFloat3("dirLights[0].ambient", dirAmbient);
+		SceneCubeShader.setFloat3("dirLights[0].diffuse", dirDiffuse);
+		SceneCubeShader.setFloat3("dirLights[0].specular", dirSpecular);
 
 		// ------------------- Point Light ------------------------ //
 
+		glm::vec3 pointLightColor = glm::vec3(127.0f / 255.0f, 66.0f / 255.0f, 66.0f / 255.0f);
+		glm::vec3 pointAmbient = pointLightColor * 0.1f;
+		glm::vec3 pointDiffuse = pointLightColor * 0.8f;
+		glm::vec3 pointSpecular = glm::vec3(1.0f);
+
 		SceneCubeShader.setFloat3("pointLights[0].position", lampPosition);
 
-		SceneCubeShader.setFloat3("pointLights[0].ambient", lightAmbient);
-		SceneCubeShader.setFloat3("pointLights[0].diffuse", lightDiffuse);
-		SceneCubeShader.setFloat3("pointLights[0].specular", lightSpecular);
+		SceneCubeShader.setFloat3("pointLights[0].ambient", pointAmbient);
+		SceneCubeShader.setFloat3("pointLights[0].diffuse", pointDiffuse);
+		SceneCubeShader.setFloat3("pointLights[0].specular", pointSpecular);
 
 		SceneCubeShader.setFloat1("pointLights[0].constant", 1.0f);
 		SceneCubeShader.setFloat1("pointLights[0].linear", 0.09f);
@@ -277,14 +278,19 @@ int main()
 
 		// ---------------------- Spot Light --------------------- //
 
+		glm::vec3 spotLightColor = glm::vec3(24.0f / 255.0f, 49.0f / 255.0f, 124.0f / 255.0f);
+		glm::vec3 spotAmbient = spotLightColor * 0.1f;
+		glm::vec3 spotDiffuse = spotLightColor * 0.8f;
+		glm::vec3 spotSpecular = glm::vec3(1.0f);
+
 		SceneCubeShader.setFloat3("flashLights[0].position", camera.position);
 		SceneCubeShader.setFloat3("flashLights[0].direction", camera.forward);
 		SceneCubeShader.setFloat1("flashLights[0].innerCutoff", glm::cos(glm::radians(10.5f)));
 		SceneCubeShader.setFloat1("flashLights[0].outterCutoff", glm::cos(glm::radians(12.5f)));
 
-		SceneCubeShader.setFloat3("flashLights[0].ambient", lightAmbient);
-		SceneCubeShader.setFloat3("flashLights[0].diffuse", lightDiffuse);
-		SceneCubeShader.setFloat3("flashLights[0].specular", lightSpecular);
+		SceneCubeShader.setFloat3("flashLights[0].ambient", spotAmbient);
+		SceneCubeShader.setFloat3("flashLights[0].diffuse", spotDiffuse);
+		SceneCubeShader.setFloat3("flashLights[0].specular", spotSpecular);
 
 		SceneCubeShader.setFloat1("flashLights[0].constant", 1.0f);
 		SceneCubeShader.setFloat1("flashLights[0].linear", 0.09f);
@@ -333,12 +339,12 @@ int main()
 		
 		glm::mat4 lampModel;
 		lampModel = glm::translate(lampModel, lampPosition);
-		lampModel = glm::scale(lampModel, glm::vec3(0.2f));
+		lampModel = glm::scale(lampModel, glm::vec3(0.1f));
 
 		LampShader.setMatrix4fv("model", glm::value_ptr(lampModel));	// <-- the only difference
 		LampShader.setMatrix4fv("view", glm::value_ptr(view));
 		LampShader.setMatrix4fv("projection", glm::value_ptr(projection));
-		LampShader.setFloat3("lightColorNow", lightColor);
+		LampShader.setFloat3("lightColorNow", pointLightColor);
 
 		glBindVertexArray(lightVAO);
 		glDrawArrays(GL_TRIANGLES, 0, 36);

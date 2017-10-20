@@ -28,6 +28,7 @@
   <ItemGroup>
     <ClInclude Include="camera.h" />
     <ClInclude Include="fShader2.glsl" />
+    <ClInclude Include="light.h" />
     <ClInclude Include="vShader2.glsl" />
     <ClInclude Include="objects.h" />
     <ClInclude Include="shader.h" />
