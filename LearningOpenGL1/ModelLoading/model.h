@@ -12,9 +12,11 @@
 class Model
 {
 public:
-	Model(char *path);
+	Model(std::string const &path)
+	{
+		LoadModel(path);
+	}
 	void Draw(Shader shader);
-
 
 private:
 	/*  Model Data   */
@@ -29,10 +31,6 @@ private:
 	std::vector<Texture> LoadMaterialTextures(aiMaterial *material, aiTextureType type, std::string typeName);
 };
 
-Model::Model(char *path)
-{
-	LoadModel(path);
-}
 
 void Model::Draw(Shader shader)
 {
@@ -47,7 +45,7 @@ void Model::LoadModel(std::string path)
 	Assimp::Importer importer;
 	const aiScene *scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);	// <-- postprocessing
 	
-	if (!scene)	// mflag == imcomplete = true
+	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 	{
 		std::cout << "ASSIMP::ERROR::IMPORTING::SCENE " << importer.GetErrorString() << std::endl;
 		return;
@@ -130,7 +128,7 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene)
 		}
 	}
 
-	// process textures
+
 	if (mesh->mMaterialIndex > 0)	// mesh uses only one material (return the index to the scene's material[] or -1)
 	{
 		// get the material itself
@@ -151,33 +149,40 @@ Mesh Model::ProcessMesh(aiMesh *mesh, const aiScene *scene)
 std::vector<Texture> Model::LoadMaterialTextures(aiMaterial *material, aiTextureType type, std::string typeName)
 {
 	std::vector<Texture> textures;
-	for (int i = 0; i < material->GetTextureCount(type); i++)
+	for (unsigned int i = 0; i < material->GetTextureCount(type); i++)
 	{
 		bool skip = false;
 		aiString path;
 		material->GetTexture(type, i, &path);
+
+		//std::cout << "Path " << path.C_Str() << std::endl;
 	
-		// optimization(don't load the same texture again == expensive task)
-		for (unsigned int j = 0; j < loadedTextures.size(); j++)
-		{
-			if (std::strcmp(loadedTextures[j].path, path.C_Str()) == 0)
-			{
-				textures.push_back(loadedTextures[j]);
-				skip = true;
-				break;
-			}
-		}
-		if (!skip)
-		{
+		////optimization(don't load the same texture again == expensive task)
+		//for (unsigned int j = 0; j < loadedTextures.size(); j++)
+		//{
+		//	std::cout << "Count = " << loadedTextures.size() << " ";
+
+		//	if (loadedTextures[j].path == path.C_Str())
+		//	{
+		//		std::cout << "They matches " << loadedTextures[j].path << std::endl;
+		//		textures.push_back(loadedTextures[j]);
+		//		skip = true;
+		//		break;
+		//	}
+		//}
+		//if (!skip)
+		//{
 			Texture texture;
 			texture.id = LoadTextureFromFile(path.C_Str(), directory);
 			texture.type = typeName;
 			texture.path = path.C_Str();
-
 			textures.push_back(texture);
-		}
-	}
+			
+			//loadedTextures.push_back(texture);
 
+			//std::cout << path.C_Str() << " " << directory.c_str() << std::endl;
+		//}
+	}
 	return textures;
 }
 

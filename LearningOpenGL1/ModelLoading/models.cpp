@@ -34,7 +34,7 @@ bool firstMouse = true;
 
 Camera camera;
 glm::vec3 lampPosition;
-GLFWwindow *window;
+//GLFWwindow *window;
 
 
 void Update();
@@ -76,7 +76,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-void processInput()
+void processInput(GLFWwindow *window)
 {
 	// Moving the camera
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)	// Forward
@@ -100,14 +100,41 @@ void processInput()
 
 int main()
 {
-	window = CreateGLFWWindow(800, 600);
+	glfwInit();
 
-	// ---------------- Shaders --------------------//
+	// set hints fot the next call of GLFWCreateWindow() call
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	/*programShader = Shader("vShader_nano_suit_model.glsl", "fShader_nano_suit_model.glsl");
 
-	nanoSuitModel = Model("./ModelLoading/Models/nanosuit.obj");
-*/
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+	GLFWwindow *window = glfwCreateWindow(800, 600, "First Window", NULL, NULL);
+
+	if (window == NULL)
+	{
+		std::cout << "ERROR::Faild to create GLFW Window" << std::endl;
+		glfwTerminate();
+		return -1;
+	}
+
+	glfwMakeContextCurrent(window);
+
+	// Init GLAD
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "Failed to initialize GLAD" << std::endl;
+		return -1;
+	}
+
+	glEnable(GL_DEPTH_TEST);
+
+	// must be called after glad init
+	glViewport(0, 0, viewPort.width, viewPort.height);	// tell opengl the size of the rendering window
+
 	// -------- callbacks & Configurations -------//
 
 	glfwSetWindowSizeCallback(window, framebuffer_size_callback);
@@ -115,27 +142,11 @@ int main()
 	glfwSetScrollCallback(window, mouse_scroll);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);	// hide but capture the cursor (mouse shouldn't leave the window)
 
-	//-------------- rendering -------------------//
+	// ------------------- shader program ----------------//
 
-	Update();
-
-	//--------------------------------------------//
-	// delallocate all resources when we done form all
-	
-	// glDeleteVertexArrays(1, &VAO);
-	// glDeleteBuffers(1, &VBO);
-
-	glfwTerminate();		// deallocate the resources 
-
-	return 0;
-}
-
-
-void Update()
-{
 	Shader programShader = Shader("./ModelLoading/vShader_nano_suit_model.glsl", "./ModelLoading/fShader_nano_suit_model.glsl");
-	Model nanoSuitModel = Model("nanosuit.obj");
-
+	Model nanoSuitModel = Model("./ModelLoading/Models/nanosuit.obj");
+	
 	programShader.use();
 
 	while (!glfwWindowShouldClose(window))
@@ -143,17 +154,16 @@ void Update()
 		deltaTime = glfwGetTime() - lastFrame;
 		lastFrame = glfwGetTime();
 
-		processInput();
+		processInput(window);
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);	// state-set function
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// state-using function
 
 		//--------------------- Drawing --------------------//
-
 		// Model matrix (from local to wolrd space
 		glm::mat4 model;
-		model = glm::rotate(model, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
+		model = glm::rotate(model, glm::radians(15.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, -1.7f, 0.0f)); // translate it down so it's at the center of the scene
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
 
 		// View matrix (from world to camera space)
@@ -167,9 +177,9 @@ void Update()
 		programShader.setMatrix4fv("model", glm::value_ptr(model));
 		programShader.setMatrix4fv("view", glm::value_ptr(view));
 		programShader.setMatrix4fv("projection", glm::value_ptr(projection));
-		
-		nanoSuitModel.Draw(programShader);
 
+		nanoSuitModel.Draw(programShader);
+		
 		//--------------------------------------------------//
 
 		GLenum err;
@@ -180,41 +190,9 @@ void Update()
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-}
 
 
-GLFWwindow* CreateGLFWWindow(int width, int height)
-{
-	glfwInit();
+	glfwTerminate();		// deallocate the resources 
 
-	// set hints fot the next call of GLFWCreateWindow() call
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-
-#ifdef __APPLE__
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-	GLFWwindow *window = glfwCreateWindow(width, height, "First Window", NULL, NULL);
-
-	if (window == NULL)
-	{
-		std::cout << "ERROR::Faild to create GLFW Window" << std::endl;
-		glfwTerminate();
-	}
-
-	glfwMakeContextCurrent(window);
-
-	// Init GLAD
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
-	}
-
-	// must be called after glad init
-	glViewport(0, 0, viewPort.width, viewPort.height);	// tell opengl the size of the rendering window
-
-	return window;
+	return 0;
 }
