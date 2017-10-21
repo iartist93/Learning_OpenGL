@@ -6,8 +6,6 @@
 #include <glm/glm/gtc/matrix_transform.hpp>
 #include <glm/glm/gtc/type_ptr.hpp>				// convert the vector/martix classes to array pointer representation to use and pass them to opengl
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "../stb_image.h"
 #include "../camera.h"
 #include "../objects.h"
 #include "../shader.h"
@@ -16,6 +14,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include "model.h"
+#include <fstream>
 
 struct
 {
@@ -102,13 +102,12 @@ int main()
 {
 	window = CreateGLFWWindow(800, 600);
 
-	// Init GLAD
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		return -1;
-	}
+	// ---------------- Shaders --------------------//
 
+	/*programShader = Shader("vShader_nano_suit_model.glsl", "fShader_nano_suit_model.glsl");
+
+	nanoSuitModel = Model("./ModelLoading/Models/nanosuit.obj");
+*/
 	// -------- callbacks & Configurations -------//
 
 	glfwSetWindowSizeCallback(window, framebuffer_size_callback);
@@ -121,7 +120,6 @@ int main()
 	Update();
 
 	//--------------------------------------------//
-
 	// delallocate all resources when we done form all
 	
 	// glDeleteVertexArrays(1, &VAO);
@@ -135,19 +133,42 @@ int main()
 
 void Update()
 {
+	Shader programShader = Shader("./ModelLoading/vShader_nano_suit_model.glsl", "./ModelLoading/fShader_nano_suit_model.glsl");
+	Model nanoSuitModel = Model("nanosuit.obj");
+
+	programShader.use();
+
 	while (!glfwWindowShouldClose(window))
 	{
 		deltaTime = glfwGetTime() - lastFrame;
 		lastFrame = glfwGetTime();
 
 		processInput();
+
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);	// state-set function
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// state-using function
 
-
 		//--------------------- Drawing --------------------//
 
-		// glDrawArrays(GL_TRIANGLES, 0, 36);
+		// Model matrix (from local to wolrd space
+		glm::mat4 model;
+		model = glm::rotate(model, glm::radians(45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
+		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
+
+		// View matrix (from world to camera space)
+		glm::mat4 view;
+		view = camera.GetViewMatrix();
+		
+		// Projection matrix (from camera to NDC)ss
+		glm::mat4 projection;	// transform to the NDC using prespective projection
+		projection = glm::perspective(glm::radians(camera.fov), (float)viewPort.width / (float)viewPort.height, 0.1f, 100.0f);
+
+		programShader.setMatrix4fv("model", glm::value_ptr(model));
+		programShader.setMatrix4fv("view", glm::value_ptr(view));
+		programShader.setMatrix4fv("projection", glm::value_ptr(projection));
+		
+		nanoSuitModel.Draw(programShader);
 
 		//--------------------------------------------------//
 
@@ -158,7 +179,6 @@ void Update()
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
 	}
 }
 
@@ -187,6 +207,13 @@ GLFWwindow* CreateGLFWWindow(int width, int height)
 
 	glfwMakeContextCurrent(window);
 
+	// Init GLAD
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "Failed to initialize GLAD" << std::endl;
+	}
+
+	// must be called after glad init
 	glViewport(0, 0, viewPort.width, viewPort.height);	// tell opengl the size of the rendering window
 
 	return window;

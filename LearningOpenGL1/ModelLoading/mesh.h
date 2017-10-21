@@ -18,7 +18,10 @@ struct Texture
 {
 	unsigned int id;
 	std::string type;
+	const char *path;
 };
+
+
 class Mesh
 {
 public:

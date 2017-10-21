@@ -24,13 +24,14 @@
     <ClCompile Include="imath.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModelLoading\models.cpp" />
-    <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
     <ClInclude Include="fShader2.glsl" />
     <ClInclude Include="light.h" />
     <ClInclude Include="ModelLoading\mesh.h" />
+    <ClInclude Include="ModelLoading\model.h" />
+    <ClInclude Include="texture.h" />
     <ClInclude Include="vShader2.glsl" />
     <ClInclude Include="objects.h" />
     <ClInclude Include="shader.h" />
@@ -39,6 +40,8 @@
   <ItemGroup>
     <None Include="fShader.glsl" />
     <None Include="fShader3.glsl" />
+    <None Include="ModelLoading\fShader_nano_suit_model.glsl" />
+    <None Include="ModelLoading\vShader_nano_suit_model.glsl" />
     <None Include="vShader.glsl" />
     <None Include="vShader3.glsl" />
   </ItemGroup>
@@ -128,7 +131,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>F:\AHMAD\Developer\OpenGL\ThirdPartyLibs\Libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>freeglut.lib;glew32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freeglut.lib;glew32.lib;glew32s.lib;glfw3.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

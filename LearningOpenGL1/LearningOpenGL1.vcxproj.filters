@@ -33,9 +33,6 @@
     <ClCompile Include="colors.cpp">
       <Filter>Source Files\Lighting</Filter>
     </ClCompile>
-    <ClCompile Include="texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ModelLoading\models.cpp">
       <Filter>Source Files\ModelLoading</Filter>
     </ClCompile>
@@ -65,6 +62,12 @@
     <ClInclude Include="ModelLoading\mesh.h">
       <Filter>Source Files\ModelLoading</Filter>
     </ClInclude>
+    <ClInclude Include="ModelLoading\model.h">
+      <Filter>Source Files\ModelLoading</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vShader.glsl">
@@ -78,6 +81,12 @@
     </None>
     <None Include="fShader.glsl">
       <Filter>Source Files</Filter>
+    </None>
+    <None Include="ModelLoading\vShader_nano_suit_model.glsl">
+      <Filter>Source Files\ModelLoading</Filter>
+    </None>
+    <None Include="ModelLoading\fShader_nano_suit_model.glsl">
+      <Filter>Source Files\ModelLoading</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
