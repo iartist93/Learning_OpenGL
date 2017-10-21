@@ -23,12 +23,14 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="imath.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ModelLoading\models.cpp" />
     <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
     <ClInclude Include="fShader2.glsl" />
     <ClInclude Include="light.h" />
+    <ClInclude Include="ModelLoading\mesh.h" />
     <ClInclude Include="vShader2.glsl" />
     <ClInclude Include="objects.h" />
     <ClInclude Include="shader.h" />

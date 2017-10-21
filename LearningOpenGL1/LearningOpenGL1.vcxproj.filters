@@ -16,6 +16,9 @@
     <Filter Include="Source Files\Lighting">
       <UniqueIdentifier>{6ac5c780-3033-4117-bccf-42640a2a3c90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ModelLoading">
+      <UniqueIdentifier>{94a2c91e-c89e-4f4c-bd43-d0a47cdb57fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -32,6 +35,9 @@
     </ClCompile>
     <ClCompile Include="texture.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelLoading\models.cpp">
+      <Filter>Source Files\ModelLoading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +58,12 @@
     </ClInclude>
     <ClInclude Include="fShader2.glsl">
       <Filter>Source Files\Lighting</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelLoading\mesh.h">
+      <Filter>Source Files\ModelLoading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
