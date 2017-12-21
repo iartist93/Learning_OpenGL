@@ -19,15 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="camera.cpp" />
     <ClCompile Include="colors.cpp" />
+    <ClCompile Include="depth_testing.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="imath.cpp" />
+    <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ModelLoading\models.cpp" />
+    <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
     <ClInclude Include="fShader2.glsl" />
+    <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="ModelLoading\mesh.h" />
     <ClInclude Include="ModelLoading\model.h" />
@@ -36,6 +41,7 @@
     <ClInclude Include="objects.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fShader.glsl" />
