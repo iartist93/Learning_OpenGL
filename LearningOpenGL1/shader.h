@@ -10,6 +10,7 @@
 class Shader
 {
 public:
+	Shader();
 	Shader(const GLchar *vShaderPath, const GLchar *fShaderPath);
 	
 	//-------------------------------------------------------#
@@ -34,6 +35,8 @@ public:
 	unsigned int ID;	// shader program id 
 
 };
+
+Shader::Shader() { }
 
 Shader::Shader(const GLchar *vShaderPath, const GLchar *fShaderPath)
 {

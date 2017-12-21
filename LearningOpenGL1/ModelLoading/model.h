@@ -12,6 +12,7 @@
 class Model
 {
 public:
+	Model();
 	Model(std::string const &path)
 	{
 		LoadModel(path);
@@ -31,6 +32,7 @@ private:
 	std::vector<Texture> LoadMaterialTextures(aiMaterial *material, aiTextureType type, std::string typeName);
 };
 
+Model::Model() { }
 
 void Model::Draw(Shader shader)
 {

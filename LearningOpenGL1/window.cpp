@@ -10,7 +10,6 @@ Window* Window::MainWindow()
 	if (!_instance)
 	{
 		_instance = new Window();
-		_instance->Init();
 	}
 	return _instance;
 }
