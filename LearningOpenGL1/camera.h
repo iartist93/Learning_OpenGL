@@ -22,7 +22,6 @@ enum CameraMovments
 class Camera
 {
 private:
-	static Camera* _instance;
 	void UpdateCameraVectors();
 
 public:
@@ -39,8 +38,6 @@ public:
 	float pitch;
 
 public:
-	static Camera* Main();
-
 	Camera (
 		glm::vec3 position = glm::vec3(0.0f, 0.0f, 5.0f),
 		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),

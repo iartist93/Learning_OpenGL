@@ -1,28 +1,16 @@
 #include <glad/glad.h>			// include glad before glfw as it contain the opengl headers 
-#include "window.h"
-#include "input.h"
+#include "GLView.h"
 #include <iostream>
 
-Window* Window::_instance;
 
-Window* Window::MainWindow()
+GLView::GLView(const std::string& viewName, int width, int height, bool resizable)
 {
-	if (!_instance)
-	{
-		_instance = new Window();
-	}
-	return _instance;
-}
+	this->width = width;
+	this->height = height;
 
-void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	glViewport(0, 0, width, height);
-}
-
-void Window::Init()
-{
 	glfwInit();
 
+	glfwWindowHint(GLFW_RESIZABLE, resizable ? true : false);	
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -32,7 +20,7 @@ void Window::Init()
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-	glfwWindow = glfwCreateWindow(width, height, "First Window", NULL, NULL);
+	glfwWindow = glfwCreateWindow(width, height, viewName.c_str(), NULL, NULL);
 
 	if (glfwWindow == NULL)
 	{
@@ -52,12 +40,31 @@ void Window::Init()
 
 	glViewport(0, 0, width, height);	// tell opengl the size of the rendering window
 
-
 	// ------------ callbacks & Configurations ------------//
 
-	glfwSetWindowSizeCallback(glfwWindow, Window::framebuffer_size_callback);
-	glfwSetCursorPosCallback(glfwWindow, Input::mouse_callback);
-	glfwSetScrollCallback(glfwWindow, Input::mouse_scroll);
+	glfwSetWindowSizeCallback(glfwWindow, WindowEventHandler::OnFramebufferSizeCallback);
+	glfwSetCursorPosCallback(glfwWindow, WindowEventHandler::OnGLFWMouseCallback);
+	glfwSetScrollCallback(glfwWindow, WindowEventHandler::OnGLFWMouseScrollCallback);
 
 	glfwSetInputMode(glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);	// hide but capture the cursor (mouse shouldn't leave the window)
+}
+
+bool GLView::windowShouldClose()
+{
+	return glfwWindowShouldClose(glfwWindow) ? true : false;
+}
+
+void GLView::terminate()
+{
+	glfwSetWindowShouldClose(glfwWindow, 1);
+}
+
+void GLView::swpapBuffer()
+{
+	glfwSwapBuffers(glfwWindow);
+}
+
+void GLView::pollEvents()
+{
+	glfwPollEvents();
 }

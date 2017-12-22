@@ -19,29 +19,42 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="colors.cpp" />
-    <ClCompile Include="depth_testing.cpp" />
+    <ClCompile Include="DepthTestScene.cpp" />
+    <ClCompile Include="Director.cpp" />
+    <ClCompile Include="Fuck.cpp" />
+    <ClCompile Include="GravityEngine.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="imath.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mesh.cpp" />
+    <ClCompile Include="model.cpp" />
     <ClCompile Include="ModelLoading\models.cpp" />
-    <ClCompile Include="window.cpp" />
+    <ClCompile Include="GLView.cpp" />
+    <ClCompile Include="GScene.cpp" />
+    <ClCompile Include="shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application.h" />
     <ClInclude Include="camera.h" />
+    <ClInclude Include="DepthTestScene.h" />
+    <ClInclude Include="Director.h" />
     <ClInclude Include="fShader2.glsl" />
+    <ClInclude Include="Fuck.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="ModelLoading\mesh.h" />
     <ClInclude Include="ModelLoading\model.h" />
+    <ClInclude Include="GScene.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="vShader2.glsl" />
     <ClInclude Include="objects.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="stb_image.h" />
-    <ClInclude Include="window.h" />
+    <ClInclude Include="GLView.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fShader.glsl" />

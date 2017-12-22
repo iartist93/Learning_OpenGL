@@ -1,7 +1,8 @@
 #pragma once
 
-#include <glm/glm/glm.hpp>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm/glm.hpp>
 
 class Input
 {
@@ -16,8 +17,8 @@ public:
 	static glm::vec2 GetMousePosition();
 	static glm::vec2 GetMouseOffset();
 
+	static void UpdateMousePosition(int xPos, int yPos);
+
 public:	// callback
 	static void ProcessKeyboard(GLFWwindow *window, float deltaTime);
-	static void mouse_callback(GLFWwindow *window, double xPos, double yPos);
-	static void mouse_scroll(GLFWwindow *window, double xOffset, double yOffset);
 };

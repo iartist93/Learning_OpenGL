@@ -1,15 +1,5 @@
 #include "camera.h"
 
-Camera* Camera::_instance;
-
-Camera* Camera::Main()
-{
-	if (!_instance)
-	{
-		_instance = new Camera();
-	}
-	return _instance;
-}
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, glm::vec3 forward, float yaw, float pitch, float fov)
 {
