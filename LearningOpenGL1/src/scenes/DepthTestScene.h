@@ -1,13 +1,13 @@
 #pragma once
 
-#include "GScene.h"
+#include "../GScene.h"
 
-#include "shader.h"
-#include "ModelLoading/model.h"
+#include "../Shader.h"
+#include "../Model.h"
 
-#include "Fuck.h"
-#include "camera.h"
-#include "GLView.h"
+#include "../Fuck.h"
+#include "../Camera.h"
+#include "../GLView.h"
 
 #include <glm/glm/glm.hpp>
 #include <glm/glm/gtc/matrix_transform.hpp>

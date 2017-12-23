@@ -4,7 +4,7 @@
 #include <glm\glm\gtc\matrix_transform.hpp>
 
 
-const float SENSITIVITY = 0.1f;
+const float SENSITIVITY = 0.05f;
 const float YAW = -90.0f;		// as 0.0f is the direction vector to the right so we rotate it to left by -90
 const float PITCH = 0.0f;
 const float FOV = 45.0f;

@@ -13,160 +13,160 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Lighting">
-      <UniqueIdentifier>{6ac5c780-3033-4117-bccf-42640a2a3c90}</UniqueIdentifier>
+    <Filter Include="Source Files\resources">
+      <UniqueIdentifier>{c9a6ae74-cb18-47df-8c5f-314735ebfb35}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ModelLoading">
-      <UniqueIdentifier>{94a2c91e-c89e-4f4c-bd43-d0a47cdb57fc}</UniqueIdentifier>
+    <Filter Include="Source Files\shaders">
+      <UniqueIdentifier>{9b31859f-fc12-449e-bc9f-a9c69e29824d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\DepthTesting">
-      <UniqueIdentifier>{7eb25b74-3abd-4bd7-81a2-1cc4bee0525a}</UniqueIdentifier>
+    <Filter Include="Source Files\scenes">
+      <UniqueIdentifier>{e7df868a-c857-4003-ae59-7030cc3ed6d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glad.c">
+    <ClCompile Include="src\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="imath.cpp">
+    <ClCompile Include="src\Director.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="colors.cpp">
-      <Filter>Source Files\Lighting</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelLoading\models.cpp">
-      <Filter>Source Files\ModelLoading</Filter>
-    </ClCompile>
-    <ClCompile Include="input.cpp">
+    <ClCompile Include="src\Fuck.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="camera.cpp">
+    <ClCompile Include="src\glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
+    <ClCompile Include="src\GLView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Director.cpp">
+    <ClCompile Include="src\GravityEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GLView.cpp">
+    <ClCompile Include="src\GScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DepthTestScene.cpp">
+    <ClCompile Include="src\iMath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GravityEngine.cpp">
-      <Filter>Source Files\DepthTesting</Filter>
-    </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>Source Files\ModelLoading</Filter>
-    </ClCompile>
-    <ClCompile Include="shader.cpp">
+    <ClCompile Include="src\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mesh.cpp">
-      <Filter>Source Files\ModelLoading</Filter>
-    </ClCompile>
-    <ClCompile Include="GScene.cpp">
+    <ClCompile Include="src\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Fuck.cpp">
+    <ClCompile Include="src\Model.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Models.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\DepthTestScene.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Colors.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Main.cpp">
+      <Filter>Source Files\scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="shader.h">
+    <ClInclude Include="src\Application.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="stb_image.h">
+    <ClInclude Include="src\Camera.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="camera.h">
+    <ClInclude Include="src\Director.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="objects.h">
+    <ClInclude Include="src\Fuck.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="vShader2.glsl">
-      <Filter>Source Files\Lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="fShader2.glsl">
-      <Filter>Source Files\Lighting</Filter>
-    </ClInclude>
-    <ClInclude Include="light.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelLoading\mesh.h">
-      <Filter>Source Files\ModelLoading</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelLoading\model.h">
-      <Filter>Source Files\ModelLoading</Filter>
-    </ClInclude>
-    <ClInclude Include="texture.h">
+    <ClInclude Include="src\GLView.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="input.h">
+    <ClInclude Include="src\GScene.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Director.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GLView.h">
+    <ClInclude Include="src\Input.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="DepthTestScene.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Light.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Mesh.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="GScene.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Model.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Fuck.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Objects.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Shader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stb_image.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Texture.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\DepthTestScene.h">
+      <Filter>Source Files\scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vShader.glsl">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="vShader3.glsl">
-      <Filter>Source Files\Lighting</Filter>
-    </None>
-    <None Include="fShader3.glsl">
-      <Filter>Source Files\Lighting</Filter>
-    </None>
-    <None Include="fShader.glsl">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="ModelLoading\vShader_nano_suit_model.glsl">
-      <Filter>Source Files\ModelLoading</Filter>
-    </None>
-    <None Include="ModelLoading\fShader_nano_suit_model.glsl">
-      <Filter>Source Files\ModelLoading</Filter>
-    </None>
+    <Image Include="resources\awesomeface.png">
+      <Filter>Source Files\resources</Filter>
+    </Image>
+    <Image Include="resources\container1.jpg">
+      <Filter>Source Files\resources</Filter>
+    </Image>
+    <Image Include="resources\container2.png">
+      <Filter>Source Files\resources</Filter>
+    </Image>
+    <Image Include="resources\container2_specular.png">
+      <Filter>Source Files\resources</Filter>
+    </Image>
+    <Image Include="resources\moana.jpg">
+      <Filter>Source Files\resources</Filter>
+    </Image>
+    <Image Include="resources\wall.jpg">
+      <Filter>Source Files\resources</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="wall.jpg">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="awesomeface.png">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="moana.jpg">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="container1.jpg">
-      <Filter>Source Files</Filter>
-    </Image>
-    <Image Include="container2.png">
-      <Filter>Source Files\Lighting</Filter>
-    </Image>
-    <Image Include="container2_specular.png">
-      <Filter>Source Files\Lighting</Filter>
-    </Image>
+    <None Include="shaders\fShader.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\fShader_nano_suit_model.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\fShader2.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\fShader3.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\vShader.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\vShader_nano_suit_model.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\vShader2.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\vShader3.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

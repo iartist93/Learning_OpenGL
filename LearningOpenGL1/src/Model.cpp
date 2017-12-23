@@ -1,6 +1,6 @@
-#include "ModelLoading/model.h"
+#include "Model.h"
 
-#include "texture.h"
+#include "Texture.h"
 
 Model::Model() { }
 

@@ -1,6 +1,6 @@
 #include "GScene.h"
 #include "Application.h"
-#include "DepthTestScene.h"
+#include "scenes/DepthTestScene.h"
 #include "Fuck.h"
 
 int main()

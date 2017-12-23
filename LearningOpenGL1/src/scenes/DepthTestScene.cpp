@@ -2,8 +2,8 @@
 
 bool DepthTestScene::init()
 {
-	programShader = Shader("./ModelLoading/vShader_nano_suit_model.glsl", "./ModelLoading/fShader_nano_suit_model.glsl");
-	nanoSuitModel = Model("./ModelLoading/Models/nanosuit.obj");
+	programShader = Shader("./shaders/vShader_nano_suit_model.glsl", "./shaders/fShader_nano_suit_model.glsl");
+	nanoSuitModel = Model("./models/nanosuit.obj");
 	
 	return true;
 }

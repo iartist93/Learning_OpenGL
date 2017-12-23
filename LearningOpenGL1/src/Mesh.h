@@ -2,7 +2,8 @@
 
 #include <glad/glad.h>
 #include <glm/glm/glm.hpp>
-#include "../shader.h"
+
+#include "Shader.h"
 
 #include <vector>
 #include <sstream>

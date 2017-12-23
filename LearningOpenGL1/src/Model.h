@@ -4,7 +4,7 @@
 #include <assimp\postprocess.h>
 #include <assimp\scene.h>
 
-#include "../shader.h"
+#include "Shader.h"
 //#include "../texture.h"
 
 #include "mesh.h"

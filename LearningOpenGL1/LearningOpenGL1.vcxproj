@@ -19,58 +19,58 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="colors.cpp" />
-    <ClCompile Include="DepthTestScene.cpp" />
-    <ClCompile Include="Director.cpp" />
-    <ClCompile Include="Fuck.cpp" />
-    <ClCompile Include="GravityEngine.cpp" />
-    <ClCompile Include="glad.c" />
-    <ClCompile Include="imath.cpp" />
-    <ClCompile Include="input.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="mesh.cpp" />
-    <ClCompile Include="model.cpp" />
-    <ClCompile Include="ModelLoading\models.cpp" />
-    <ClCompile Include="GLView.cpp" />
-    <ClCompile Include="GScene.cpp" />
-    <ClCompile Include="shader.cpp" />
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Director.cpp" />
+    <ClCompile Include="src\Fuck.cpp" />
+    <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\GLView.cpp" />
+    <ClCompile Include="src\GravityEngine.cpp" />
+    <ClCompile Include="src\GScene.cpp" />
+    <ClCompile Include="src\iMath.cpp" />
+    <ClCompile Include="src\Input.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
+    <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\scenes\Colors.cpp" />
+    <ClCompile Include="src\scenes\DepthTestScene.cpp" />
+    <ClCompile Include="src\scenes\Main.cpp" />
+    <ClCompile Include="src\scenes\Models.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="DepthTestScene.h" />
-    <ClInclude Include="Director.h" />
-    <ClInclude Include="fShader2.glsl" />
-    <ClInclude Include="Fuck.h" />
-    <ClInclude Include="input.h" />
-    <ClInclude Include="light.h" />
-    <ClInclude Include="ModelLoading\mesh.h" />
-    <ClInclude Include="ModelLoading\model.h" />
-    <ClInclude Include="GScene.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="vShader2.glsl" />
-    <ClInclude Include="objects.h" />
-    <ClInclude Include="shader.h" />
-    <ClInclude Include="stb_image.h" />
-    <ClInclude Include="GLView.h" />
+    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\Director.h" />
+    <ClInclude Include="src\Fuck.h" />
+    <ClInclude Include="src\GLView.h" />
+    <ClInclude Include="src\GScene.h" />
+    <ClInclude Include="src\Input.h" />
+    <ClInclude Include="src\Light.h" />
+    <ClInclude Include="src\Mesh.h" />
+    <ClInclude Include="src\Model.h" />
+    <ClInclude Include="src\Objects.h" />
+    <ClInclude Include="src\scenes\DepthTestScene.h" />
+    <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\stb_image.h" />
+    <ClInclude Include="src\Texture.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="fShader.glsl" />
-    <None Include="fShader3.glsl" />
-    <None Include="ModelLoading\fShader_nano_suit_model.glsl" />
-    <None Include="ModelLoading\vShader_nano_suit_model.glsl" />
-    <None Include="vShader.glsl" />
-    <None Include="vShader3.glsl" />
+    <Image Include="resources\awesomeface.png" />
+    <Image Include="resources\container1.jpg" />
+    <Image Include="resources\container2.png" />
+    <Image Include="resources\container2_specular.png" />
+    <Image Include="resources\moana.jpg" />
+    <Image Include="resources\wall.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="awesomeface.png" />
-    <Image Include="container1.jpg" />
-    <Image Include="container2.png" />
-    <Image Include="container2_specular.png" />
-    <Image Include="moana.jpg" />
-    <Image Include="wall.jpg" />
+    <None Include="shaders\fShader.glsl" />
+    <None Include="shaders\fShader2.glsl" />
+    <None Include="shaders\fShader3.glsl" />
+    <None Include="shaders\fShader_nano_suit_model.glsl" />
+    <None Include="shaders\vShader.glsl" />
+    <None Include="shaders\vShader2.glsl" />
+    <None Include="shaders\vShader3.glsl" />
+    <None Include="shaders\vShader_nano_suit_model.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
