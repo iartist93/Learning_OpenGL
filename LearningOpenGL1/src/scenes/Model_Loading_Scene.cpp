@@ -1,6 +1,6 @@
-#include "DepthTestScene.h"
+#include "Model_Loading_Scene.h"
 
-bool DepthTestScene::init()
+bool ModelLoadingScene::init()
 {
 	programShader = Shader("./shaders/vShader_nano_suit_model.glsl", "./shaders/fShader_nano_suit_model.glsl");
 	nanoSuitModel = Model("./models/nanosuit.obj");
@@ -8,12 +8,12 @@ bool DepthTestScene::init()
 	return true;
 }
 
-std::string DepthTestScene::name()
+std::string ModelLoadingScene::name()
 {
-	return std::string("Depth Test Scene");
+	return std::string("Model Loading Scene");
 }
 
-void DepthTestScene::render()
+void ModelLoadingScene::render()
 {	
 	programShader.use();
 
@@ -43,14 +43,14 @@ void DepthTestScene::render()
 }
 
 
-void DepthTestScene::clear()
+void ModelLoadingScene::clear()
 {
 	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);	// state-set function
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// state-using function
 }
 
-Scene* DepthTestScene::CreateScene()
+Scene* ModelLoadingScene::CreateScene()
 {
-	auto scene = new DepthTestScene();
+	auto scene = new ModelLoadingScene();
 	return scene;
 }

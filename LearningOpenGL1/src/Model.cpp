@@ -1,7 +1,5 @@
 #include "Model.h"
 
-#include "Texture.h"
-
 Model::Model() { }
 
 Model::Model(std::string const &path)

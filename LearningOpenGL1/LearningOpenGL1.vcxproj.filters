@@ -66,14 +66,20 @@
     <ClCompile Include="src\scenes\Models.cpp">
       <Filter>Source Files\scenes</Filter>
     </ClCompile>
-    <ClCompile Include="src\scenes\DepthTestScene.cpp">
-      <Filter>Source Files\scenes</Filter>
-    </ClCompile>
     <ClCompile Include="src\scenes\Colors.cpp">
       <Filter>Source Files\scenes</Filter>
     </ClCompile>
     <ClCompile Include="src\scenes\Main.cpp">
       <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Model_Loading_Scene.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scenes\Depth_Test_Scene.cpp">
+      <Filter>Source Files\scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,7 +125,10 @@
     <ClInclude Include="src\Texture.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\scenes\DepthTestScene.h">
+    <ClInclude Include="src\scenes\Model_Loading_Scene.h">
+      <Filter>Source Files\scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scenes\Depth_Test_Scene.h">
       <Filter>Source Files\scenes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -166,6 +175,12 @@
       <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="shaders\vShader3.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\fShaderDepthTesting.glsl">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\vShaderDepthTesting.glsl">
       <Filter>Source Files\shaders</Filter>
     </None>
   </ItemGroup>

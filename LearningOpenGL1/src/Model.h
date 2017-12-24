@@ -5,9 +5,8 @@
 #include <assimp\scene.h>
 
 #include "Shader.h"
-//#include "../texture.h"
-
 #include "mesh.h"
+#include "texture.h"
 
 class Model
 {

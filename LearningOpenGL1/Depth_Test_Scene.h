@@ -1,10 +1,8 @@
 #pragma once
 
 #include "../GScene.h"
-
 #include "../Shader.h"
 #include "../Model.h"
-
 #include "../Fuck.h"
 #include "../Camera.h"
 #include "../GLView.h"
@@ -15,9 +13,13 @@
 
 #include <string>
 
-
-class DepthTestScene : Scene 
+class DepthTestingScene
 {
+public:
+	DepthTestingScene();
+	~DepthTestingScene();
+
+
 public:
 	static Scene* CreateScene();
 
@@ -30,5 +32,6 @@ public:
 public:
 	Shader programShader;
 	Model nanoSuitModel;
+
 };
 
